@@ -1,0 +1,306 @@
+/************************************************* CARD ******************************************************************************/
+.pokemon-card 
+{
+    font-family: 'Futura';
+    border: 10px solid #ffe658; 
+    border-radius: 20px; 
+    display: inline-block; 
+    box-sizing: content-box;
+    margin-bottom: 20px;
+}
+
+
+.pokemon-card-inner 
+{
+    padding: 9px; 
+}
+
+
+/************************************************* CARD HEADER ******************************************************************************/
+.pokemon-card-header 
+{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin-bottom: 7px;
+    justify-content: space-between;
+}
+
+.type-img 
+{
+    height: 25px;
+}
+
+
+.pokemon-hp, .header-left 
+{
+    display: flex;
+    flex-direction: row;
+}
+
+.text-pokemon-name, .hp-value 
+{
+    font-size: 24px;
+    margin: 0;
+}
+
+.title-hp 
+{
+    font-size: 8px;
+    margin: 0;
+    font-weight: bold;
+    align-self: flex-end;
+    padding-bottom: 6px;
+}
+/************************************************* PREEVOLUTION SECTION ******************************************************************************/
+.pokemon-stage
+{
+    display: flex;
+    flex-direction: column;
+}
+
+.pokemon-stage-name 
+{
+    background: linear-gradient(to left, #e1e1e1, #ffffff, #e1e1e1);
+    border-radius: 6px;
+    padding: 0 7px; 
+    border: 1px solid #ccc;
+    margin-right: 10px;
+    margin-left: -12px;
+    display: flex;
+    align-items: center;
+    height: 18px;
+    padding: 2px 5px;
+    position: relative;
+    box-sizing: content-box;
+}
+
+.text-stage {
+    font-size: 12px;
+    margin: 0;
+    font-style: italic;
+    font-weight: bold;
+}
+
+.preevolution-container 
+{
+    transform: translateX(-5%);
+    z-index: 2;
+    position: absolute;
+    margin-top: 23px;
+    display: inline-flex; 
+    align-items: center;
+    font-style: italic;
+}
+
+.preevolution-image-container
+{
+    clip-path: polygon(30% 0%, 70% 0%, 100% 30%, 100% 70%, 70% 100%, 30% 100%, 0% 70%, 0% 30%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid #ccc;
+    background-color: #e1e1e1; 
+    width: 40px; 
+    height: 40px; 
+}
+.preevolution-img
+{
+    height: 30px;
+}
+
+.preevolution-text-container
+{
+    border: 1px solid #ccc;
+    background: linear-gradient(to left, #e1e1e1, #ffffff, #e1e1e1);
+}
+
+.preevolution-text-container p
+{
+    margin: 0px;
+    padding: 2px;
+    font-size: 8px;
+    padding-right: 40px;
+}
+
+.no-evolution
+{
+    display: none;
+}
+
+/************************************************* IMAGE SECTION ******************************************************************************/
+.image-section 
+{
+    border: 3px solid #ccc;
+    display: flex;
+    flex-direction: column; 
+    position: relative;
+}
+
+.img-info 
+{
+    font-family: 'Futura-Medium';
+    font-size: 8px;
+    display: flex;
+    justify-content: center;
+    background-color: #e1e1e1;
+    margin-top: 0; 
+    margin-bottom: 0; 
+    border: none; 
+}
+
+.pokemon-img 
+{
+    width: 260px;
+    height: 140px;
+    margin: 0; 
+}
+
+.img-info p 
+{
+    margin: 2px;
+}
+
+/************************************************* MOVEMENTS SECTION ******************************************************************************/
+.movements-section 
+{
+    margin-top: 20px;
+}
+.movements-section p 
+{
+    margin:0px;
+}
+
+.move 
+{
+    display: grid;
+    grid-template-columns: 83.33px 126.63px auto; 
+    align-items: center; 
+    margin-top: 20px;
+}
+.type-move-img
+{
+    height: 22px;
+}
+
+.movement-damage 
+{
+    align-items: center;
+    justify-self: end;
+    font-weight: bold; 
+}
+.move-description
+{
+    font-family: 'Futura-Medium';
+    font-size: 8px;
+    margin: 0px;
+    width: 250px;
+    height: 25px;
+}
+
+/************************************************* WEAKNESS SECTION ******************************************************************************/
+.weak-retreat-section
+{
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 5px;
+}
+
+.weak-and-resistance-container
+{
+    display: flex;
+    flex-direction: row;
+    border: 1px solid #ccc;
+    background: linear-gradient(to left, #e1e1e1, #ffffff, #e1e1e1);
+    border-radius: 6px;
+    margin-left: -12px;
+    width: 160px;
+}
+.weak-container
+{
+    display: flex;
+    flex-direction: row;
+}
+
+.weak-and-resistance-container p , .retreat-container p
+{
+    font-size: 8px;
+    margin: 0px;
+    padding: 3px;
+}
+
+.weak-and-resistance-container img
+{
+    align-self: center;
+}
+
+.weakness-text, .x-damage
+{
+    margin-right: 5px;
+}
+
+.resistance-container
+{
+    margin-right: 0px;
+    display: flex;    
+    flex-direction: row;
+}
+
+.retreat-container
+{
+    display: flex;
+    flex-direction: row;
+    border: 1px solid #ccc;
+    background: linear-gradient(to left, #e1e1e1, #ffffff, #e1e1e1);
+    border-radius: 6px;
+    width: 90px;
+    margin-right: -12px;
+}
+
+.type-img-mini,.rarerty-simbols-img 
+{
+    height: 15px;
+}
+/************************************************* CARD FOOTER ******************************************************************************/
+.card-footer * 
+{
+    margin: 0;
+    padding: 0;
+}
+
+.card-footer
+{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.footer-left p
+{
+    font-size: 6px;
+}
+
+.rarety-variables
+{
+    display: flex;
+    align-items: center;
+}
+
+.rarerty-simbols-img
+{
+    margin-right: 10px;
+}
+
+.rarerty-simbols2-img
+{
+    height: 8px;
+    margin-left: 5px;
+}
+
+.footer-right p 
+{
+    font-size: 6px;
+    width: 139px;
+    font-family: 'Futura-Medium';
+}

@@ -1,0 +1,129 @@
+/************************************************* FONTS ******************************************************************************/
+@font-face 
+{
+    font-family: 'Futura'; 
+    src: url('../font/Futura Heavy font.ttf'); 
+}
+
+@font-face 
+{
+    font-family: 'Futura-Medium'; 
+    src: url('../font/futura medium bt.ttf'); 
+}
+/************************************************* BODY AND MAIN CONTAINERS **********************************************************/
+body 
+{
+    font-family: 'Futura';
+    margin: 0px;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    background-image: url("../img/background_light.jpeg");
+    justify-content: center;
+   
+}
+
+main
+{
+    display: flex;
+    flex:1;
+    flex-direction: column;
+}
+
+header
+{
+    font-family: 'Futura';
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+h1
+{
+    text-align: center;
+}
+
+.theme-btn {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    width: 60px;
+    height: 60px;
+    background-color: #EDEDEE; 
+    border-radius: 50%; 
+    margin: 5px; 
+    cursor: pointer;
+    z-index: 5;
+}
+
+
+.project-container
+{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.button-container
+{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    margin: 10px;
+}
+.card-element
+{
+    background-color: #F5F8FE;
+    padding: 15px 20px;
+    border-radius: 15px;
+    -webkit-box-shadow: 10px 10px 31px 4px rgba(0,0,0,0.75);
+    -moz-box-shadow: 10px 10px 31px 4px rgba(0,0,0,0.75);
+    box-shadow: 10px 10px 31px 4px rgba(0,0,0,0.75);
+    margin: 10px;
+}
+
+.form-control:valid , .form-select:valid{
+    -webkit-box-shadow: 10px 10px 5px -8px rgba(0,0,0,0.75);
+-moz-box-shadow: 10px 10px 5px -8px rgba(0,0,0,0.75);
+box-shadow: 10px 10px 5px -8px rgba(0,0,0,0.75);
+  }
+/************************************************* FOOTER ******************************************************************************/
+
+footer {
+    bottom: 0; 
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background: linear-gradient(to bottom, rgba(26, 25, 24, 0.3), #1A1918);
+    padding: 10px;
+    width: 100%; 
+    top: 100%;
+    box-sizing: border-box;
+}
+
+.footer-copyright{
+    color: #EDEDEE;
+    font-weight: bold;
+    font-size: 16px;
+}
+.social-icons{
+    display: flex;
+    flex-direction: row;
+}
+
+.social-icons a {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    background-color: #EDEDEE; 
+    border-radius: 50%; 
+    margin: 5px; 
+    cursor: pointer;
+    color: #323131;
+    text-decoration: none;
+}
