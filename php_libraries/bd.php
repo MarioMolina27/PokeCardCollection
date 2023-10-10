@@ -65,6 +65,23 @@ function selectPokemon()
     return $resultado;
 }
 
+function selectPokemonByID($id)
+{
+    $conexion = openBd();
+
+    $sentenciaText = "select * from pokemon where id = :id;";
+    $sentencia = $conexion->prepare($sentenciaText);
+    $sentencia->bindParam(':id', $id);
+    $sentencia->execute();
+
+    $resultado = $sentencia->fetchAll();
+
+    $conexion = closeBd();
+
+    return $resultado;
+}
+
+
 function selectPokemonMoves($id_pokemon)
 {
     $conexion = openBd();
@@ -96,7 +113,7 @@ function selectTypeByPokemon($id_pokemon)
     $conexion = openBd();
 
     $sentenciaText = "
-    SELECT Tipo.nombre, Tipo.id AS debilidades, Tipo.id AS fortalezas
+    SELECT Tipo.id as id,Tipo.nombre, Tipo.id AS debilidades, Tipo.id AS fortalezas
     FROM Tipo
     INNER JOIN Tipo_Pokemon ON Tipo.id = Tipo_Pokemon.id_Tipo
     INNER JOIN Pokemon ON Tipo_Pokemon.id_Pokemon = Pokemon.id
@@ -104,6 +121,32 @@ function selectTypeByPokemon($id_pokemon)
 
     $sentencia = $conexion->prepare($sentenciaText);
     $sentencia->bindParam(':id_pokemon', $id_pokemon);
+    $sentencia->execute();
+
+    $resultado = $sentencia->fetchAll();
+
+    $conexion = closeBd();
+
+    return $resultado;
+}
+
+function selectTypeWeakness($id)
+{
+    $conexion = openBd();
+
+    $sentenciaText = "
+    SELECT Tipo.nombre AS Tipo_Pokemon,
+       GROUP_CONCAT(DISTINCT Debilidades.nombre) AS Debilidades,
+       GROUP_CONCAT(DISTINCT Fortalezas.nombre) AS Fortalezas
+        FROM Tipo
+        LEFT JOIN Tipo_Pokemon AS TP ON Tipo.id = TP.id_Tipo
+        LEFT JOIN Tipo AS Debilidades ON Debilidades.id = Tipo.debilidades
+        LEFT JOIN Tipo AS Fortalezas ON Fortalezas.id = Tipo.fortalezas
+        WHERE Tipo.id = :id
+        GROUP BY Tipo_Pokemon;";
+
+    $sentencia = $conexion->prepare($sentenciaText);
+    $sentencia->bindParam(':id', $id);
     $sentencia->execute();
 
     $resultado = $sentencia->fetchAll();
@@ -127,71 +170,4 @@ function selectRegions()
 
     return $resultado;
 }
-
-function insertCiudad($id_ciudad, $nombre)
-{
-    try {
-        $conexion = openBd();
-        $sentenciaText = "insert into ciudades (id_ciudad,nombre) values (:id_ciudad, :nombre)";
-        $sentencia = $conexion->prepare($sentenciaText);
-        $sentencia->bindParam(':id_ciudad', $id_ciudad);
-        $sentencia->bindParam(':nombre', $nombre);
-        $sentencia->execute();
-        $_SESSION['mensaje'] = 'Registro insertado correctemente';
-
-    } catch (PDOException $e) {
-        $_SESSION['error'] = errorMessage($e);
-        $ciudad['id_ciudad'] = $id_ciudad;
-        $ciudad['nombre'] = $nombre;
-        $_SESSION['ciudad'] = $ciudad;
-    }
-
-    $conexion = closeBd();
-
-}
-
-function insertCadena($cif, $nombre, $dir_fis)
-{
-    try 
-    {
-        $conexion = openBd();
-        $sentenciaText = "INSERT INTO cadenas (cif, nombre, dir_fis) VALUES (:cif, :nombre, :dir_fis)";
-        $sentencia = $conexion->prepare($sentenciaText);
-        $sentencia->bindParam(':cif', $cif);
-        $sentencia->bindParam(':nombre', $nombre);
-        $sentencia->bindParam(':dir_fis', $dir_fis);
-        $sentencia->execute();
-        $_SESSION['mensaje'] = 'Registro insertado correctamente';
-    } 
-    catch (PDOException $e) 
-    {
-        $_SESSION['error'] = errorMessage($e);
-        $cadena['cif'] = $cif;
-        $cadena['nombre'] = $nombre;
-        $cadena['dir_fis'] = $dir_fis;
-        $_SESSION['cadena'] = $cadena;
-    }
-
-    $conexion = closeBd();
-}
-
-function deleteCadena($cif)
-{
-    try 
-    {
-        $conexion = openBd();
-        $sentenciaText = "delete from cadenas where cif = :cif";
-        $sentencia = $conexion->prepare($sentenciaText);
-        $sentencia->bindParam(':cif', $cif);
-        $sentencia->execute();
-
-    } 
-    catch (PDOException $e) 
-    {
-        $_SESSION['error'] = errorMessage($e);
-    }
-
-    $conexion = closeBd();
-}
-
 ?>

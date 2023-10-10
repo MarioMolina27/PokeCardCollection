@@ -58,6 +58,20 @@
                 $pokemonMoves = selectPokemonMoves($pokemon["id"]);
                 $pokemonTypes = selectTypeByPokemon($pokemon["id"]);
                 $hexType = getHexColor($pokemonTypes[0]['nombre']);
+                $typeWeakness = [];
+                foreach ($pokemonTypes as $type ) 
+                {
+                    $typeW = selectTypeWeakness($type["id"]);
+                    $typeWeakness = array_merge($typeWeakness, $typeW);
+                }
+                $evolution = "no-evolution";
+                $pokemonPreevolution = selectPokemonByID($pokemon["ID_Preevolucion"]);
+                if($pokemon["ID_Preevolucion"] !== null)
+                {
+                    $evolution = "evolution";
+                }
+
+                
             ?>
                 <div class="card-element">
                     <div class="pokemon-card" style="background-color: <?php echo $hexType ?>;">
@@ -68,12 +82,12 @@
                                         <div class="pokemon-stage-name">
                                             <p class="text-stage"><?php echo $pokemon['etapa']?></p>
                                         </div>
-                                        <div class="preevolution-container no-evolution">
+                                        <div class="preevolution-container <?php echo $evolution ?>">
                                             <div class="preevolution-image-container">
-                                                <img src="" alt="" class="preevolution-img">
+                                                <img src="img/pokemon/<?php echo $pokemonPreevolution[0]["imgSecundaria"]?>" alt="" class="preevolution-img">
                                             </div>
                                             <div class="preevolution-text-container">
-                                                <p>Evolves from </p>
+                                                <p>Evolves from <?php echo $pokemonPreevolution[0]["nombre"]?> </p>
                                             </div>
                                         </div>
                                     </div>
@@ -119,12 +133,15 @@
                                 <div class="weak-and-resistance-container">
                                     <div class="weak-container">
                                         <p class="weakness-text">weakness</p>
-
-                                        <img src="img/electric-type.png" alt="electric-type" class="type-img-mini">
-                                        <p class="x-damage">x 2</p>
+                                        <?php foreach ($typeWeakness as $weak ) {?>
+                                            <img src="img/<?php echo strtolower($weak['Debilidades']);?>-type.png" alt="electric-type" class="type-img-mini">
+                                        <?php }?>
                                     </div>
                                     <div class="resistance-container">
                                         <p class="resistance-text">resistance</p>
+                                        <?php foreach ($typeWeakness as $weak ) {?>
+                                            <img src="img/<?php echo strtolower($weak['Fortalezas']);?>-type.png" alt="electric-type" class="type-img-mini">
+                                        <?php }?>
                                     </div>
                                 </div>
                             </div>
