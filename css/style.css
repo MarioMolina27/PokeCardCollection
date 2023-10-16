@@ -73,17 +73,38 @@ h1
     justify-content: space-around;
     margin: 10px;
 }
-.card-element
-{
-    background-color: #F5F8FE;
+.card-element {
+    background-color: #000;
     padding: 15px 20px;
     border-radius: 15px;
     -webkit-box-shadow: 10px 10px 31px 4px rgba(0,0,0,0.75);
     -moz-box-shadow: 10px 10px 31px 4px rgba(0,0,0,0.75);
     box-shadow: 10px 10px 31px 4px rgba(0,0,0,0.75);
     margin: 10px;
+    display: none;
 }
 
+.fadeIn {
+    animation-name: fadeInAnimation;
+    animation-duration: 3s;
+    animation-iteration-count: 1;
+    animation-timing-function: ease-in;
+}
+
+@keyframes fadeInAnimation {
+    from {
+      opacity: 0;
+      filter: blur(20px);
+    }
+    to {
+      opacity: 1;
+      filter: blur(10px);
+    }
+  }
+
+
+  
+  
 .form-control:valid , .form-select:valid{
     -webkit-box-shadow: 10px 10px 5px -8px rgba(0,0,0,0.75);
 -moz-box-shadow: 10px 10px 5px -8px rgba(0,0,0,0.75);
