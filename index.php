@@ -1,7 +1,33 @@
 <?php
     require_once('./php_libraries/bd.php');
     require_once('./php_libraries/php_card_colors.php');
-    $pokemons = selectPokemon();
+    $pokemonSearch ="";
+    $pokemonRegion = 0;
+    if (isset($_POST["pokemon_name"])) 
+    {
+        $pokemonName = $_POST["pokemon_name"];
+        $pokemons = selectPokemonByName($pokemonName);
+        $pokemonSearch = $pokemonName;
+    }
+    else if(isset($_POST["region_select"]))
+    {
+        $pokemonRegion = $_POST["region_select"];
+        if($pokemonRegion == 0)
+        {
+            $pokemons = selectPokemon();
+        }
+        else
+        {
+            $pokemons= selectPokemonByRegion($pokemonRegion);
+        }
+    }
+    else
+    {
+        $pokemons = selectPokemon();
+    }
+
+    
+   
     $regions = selectRegions();
 ?>
 <!DOCTYPE html>
@@ -29,28 +55,35 @@
     <main>
 
 
-        <div class="container-fluid mt-5 mb-5 d-flex justify-content-center">
-            <form class="w-100 justify-content-center">
-                <div class="row d-flex align-items-center">
-                    <div class="col">
-                        <input type="text" class="form-control" placeholder="Name" aria-label="Pokemon Name">
-                    </div>
-                    <div class="col d-flex justify-content-end">
-                        <button type="button" class="btn btn-success btn-lg "><i class="fa-solid fa-plus"></i></button>
-                    </div>
-                    <div class="col">
-                        <select class="form-select" aria-label="Default select example">
-                            <option selected>All Regions</option>
-                            <?php foreach ($regions as $region) { ?>
-                                <option value="<?php echo $region['id']; ?>">
-                                    <?php echo $region['nombre']; ?>
-                                </option>
-                            <?php } ?>
-                        </select>
-                    </div>
-                </div>
-            </form>
+    <div class="container-fluid mt-5 mb-5 d-flex justify-content-center">
+        <div class="row d-flex align-items-center w-100">
+            <div class="col d-flex">
+                <form action ="index.php" method="POST" class="w-100 d-flex">
+                    <input type="text" class="form-control " placeholder="Name" aria-label="Pokemon Name" name="pokemon_name" value="<?php echo $pokemonSearch ?>">
+                    <button type="submit" class="btn btn-success"><i class="fa-solid fa-magnifying-glass"></i></button>
+                </form>
+            </div>
+            <div class="col d-flex justify-content-center">
+                <form method="POST">
+                    <button type="submit" class="btn btn-success btn-lg "><i class="fa-solid fa-plus"></i></button>
+                </form>
+            </div>
+
+            <div class="col d-flex">
+                <form action ="index.php" method="POST" class="w-100 d-flex">
+                    <select class="form-select" aria-label="Default select example" name="region_select">
+                        <option value="0" <?php if($pokemonRegion == 0) echo 'selected'; ?>>All Regions</option>
+                        <?php foreach ($regions as $region) { ?>
+                            <option value="<?php echo $region['id']; ?>" <?php if($pokemonRegion== $region['id']) echo 'selected'; ?>>
+                                <?php echo $region['nombre']; ?>
+                            </option>
+                        <?php } ?>
+                    </select>
+                    <button type="submit" class="btn btn-success"><i class="fa-solid fa-magnifying-glass"></i></button>
+                </form>
+            </div>
         </div>
+    </div>
 
 
         <div class="project-container mb-5">
@@ -184,6 +217,7 @@
         <p class="footer-copyright">&copy; 2023 mmolinab - Mario Molina</p>
     </footer>
    <script src="js/main.js"></script>
+   <script src="js/fadeIn.js"></script>
 </body>
 
 </html>

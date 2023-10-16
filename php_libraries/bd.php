@@ -65,6 +65,42 @@ function selectPokemon()
     return $resultado;
 }
 
+function selectPokemonByName($name)
+{
+    $conexion = openBd();
+
+    $sentenciaText = "SELECT * FROM pokemon WHERE nombre LIKE :name";
+    $sentencia = $conexion->prepare($sentenciaText);
+    
+    $name = '%' . $name . '%';
+    
+    $sentencia->bindParam(':name', $name);
+    $sentencia->execute();
+
+    $resultado = $sentencia->fetchAll();
+
+    $conexion = closeBd();
+
+    return $resultado;
+}
+
+function selectPokemonByRegion($id)
+{
+    $conexion = openBd();
+
+    $sentenciaText = "SELECT * FROM pokemon WHERE ID_Region = :id";
+    $sentencia = $conexion->prepare($sentenciaText);
+    
+    $sentencia->bindParam(':id', $id);
+    $sentencia->execute();
+
+    $resultado = $sentencia->fetchAll();
+
+    $conexion = closeBd();
+
+    return $resultado;
+}
+
 function selectPokemonByID($id)
 {
     $conexion = openBd();
