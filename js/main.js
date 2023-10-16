@@ -3,6 +3,7 @@ $(document).ready(function () {
         var $card = $(this);
         setTimeout(function () {
             $card.removeClass('fadeIn');
-        }, index * 1000); // 200 ms de retraso entre elementos (ajusta según tus preferencias)
+            $card.css('display', 'block'); // Muestra el elemento
+        }, index * 400); // 200 ms de retraso entre elementos (ajusta según tus preferencias)
     });
 });

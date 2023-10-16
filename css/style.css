@@ -74,29 +74,27 @@ h1
     margin: 10px;
 }
 .card-element {
-    background-color: #000;
+    background-color: #EDEDEE;
     padding: 15px 20px;
     border-radius: 15px;
     -webkit-box-shadow: 10px 10px 31px 4px rgba(0,0,0,0.75);
     -moz-box-shadow: 10px 10px 31px 4px rgba(0,0,0,0.75);
     box-shadow: 10px 10px 31px 4px rgba(0,0,0,0.75);
     margin: 10px;
-    display: none;
 }
 
 .fadeIn {
     animation-name: fadeInAnimation;
-    animation-duration: 3s;
-    animation-iteration-count: 1;
+    animation-duration: 1.5s;
     animation-timing-function: ease-in;
 }
 
 @keyframes fadeInAnimation {
-    from {
+    0% {
       opacity: 0;
       filter: blur(20px);
     }
-    to {
+    100% {
       opacity: 1;
       filter: blur(10px);
     }

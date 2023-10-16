@@ -183,7 +183,7 @@
         </div>
         <p class="footer-copyright">&copy; 2023 mmolinab - Mario Molina</p>
     </footer>
-   
+   <script src="js/main.js"></script>
 </body>
 
 </html>
