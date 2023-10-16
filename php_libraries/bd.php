@@ -206,4 +206,23 @@ function selectRegions()
 
     return $resultado;
 }
+
+function deletePokemon($id)
+{
+    try 
+    {
+        $conexion = openBd();
+        $sentenciaText = "delete from pokemon where id = :id";
+        $sentencia = $conexion->prepare($sentenciaText);
+        $sentencia->bindParam(':id', $id);
+        $sentencia->execute();
+
+    } 
+    catch (PDOException $e) 
+    {
+        $_SESSION['error'] = errorMessage($e);
+    }
+
+    $conexion = closeBd();
+}
 ?>

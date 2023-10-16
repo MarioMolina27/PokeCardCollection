@@ -26,8 +26,6 @@
         $pokemons = selectPokemon();
     }
 
-    
-   
     $regions = selectRegions();
 ?>
 <!DOCTYPE html>
@@ -37,6 +35,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PokeCardCollector</title>
+    <link rel="icon" type="image/x-icon" href="img/favicon.png">
     <link rel="stylesheet" href="./css/card.css">
     <link rel="stylesheet" href="./css/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
@@ -65,7 +64,7 @@
             </div>
             <div class="col d-flex justify-content-center">
                 <form method="POST">
-                    <button type="submit" class="btn btn-success btn-lg "><i class="fa-solid fa-plus"></i></button>
+                    <button type="submit" class="btn btn-success btn-lg rounded-circle"><i class="fa-solid fa-plus"></i></button>
                 </form>
             </div>
 
@@ -87,6 +86,7 @@
 
 
         <div class="project-container mb-5">
+            <?php require_once('php_partials/mensajes.php');?>
             <?php foreach ($pokemons as $pokemon) { 
                 $pokemonMoves = selectPokemonMoves($pokemon["id"]);
                 $pokemonTypes = selectTypeByPokemon($pokemon["id"]);
@@ -102,9 +102,7 @@
                 if($pokemon["ID_Preevolucion"] !== null)
                 {
                     $evolution = "evolution";
-                }
-
-                
+                } 
             ?>
                 <div class="card-element fadeIn">
                     <div class="pokemon-card" style="background-color: <?php echo $hexType ?>;">
@@ -197,8 +195,14 @@
                         </div>
                     </div>
                     <div class="button-container">
-                        <button type="button" class="btn btn-dark"><i class="fa-solid fa-pencil"></i> | Edit</button>
-                        <button type="button" class="btn btn-danger"><i class="fa-solid fa-trash"></i> | Delete</button>
+                        <form action="">
+                            <input type="hidden" name="pokemon_id_edit" value="<?php echo $pokemon['id']?>">
+                            <button type="submit" class="btn btn-dark"><i class="fa-solid fa-pencil"></i> | Edit</button>
+                        </form>
+                        <form action="php_controllers/pokemonController.php" method="POST">
+                            <input type="hidden" name="pokemon_id_delete" value="<?php echo $pokemon['id']?>">
+                            <button type="sumbit" class="btn btn-danger"><i class="fa-solid fa-trash"></i> | Delete</button>                     
+                        </form>
                     </div>
                 </div>
             <?php } ?>
@@ -216,7 +220,6 @@
         </div>
         <p class="footer-copyright">&copy; 2023 mmolinab - Mario Molina</p>
     </footer>
-   <script src="js/main.js"></script>
    <script src="js/fadeIn.js"></script>
 </body>
 
