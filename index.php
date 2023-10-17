@@ -83,10 +83,8 @@
             </div>
         </div>
     </div>
-
-
+    <?php require_once('php_partials/mensajes.php');?>
         <div class="project-container mb-5">
-            <?php require_once('php_partials/mensajes.php');?>
             <?php foreach ($pokemons as $pokemon) { 
                 $pokemonMoves = selectPokemonMoves($pokemon["id"]);
                 $pokemonTypes = selectTypeByPokemon($pokemon["id"]);

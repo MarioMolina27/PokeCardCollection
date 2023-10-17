@@ -4,7 +4,7 @@
     if (isset($_POST['insert'])) 
     {
         
-        insertCiudad($_POST['id_ciudad'],$_POST['nombre']);
+        //insertCiudad($_POST['id_ciudad'],$_POST['nombre']);
 
         if(isset($_SESSION['error']))
         {

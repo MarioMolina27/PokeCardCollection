@@ -1,4 +1,5 @@
-<?php if (isset($_SESSION['mensaje'])) { ?>
+<?php 
+if (isset($_SESSION['mensaje'])) { ?>
 
     <div class="alert alert-success alert-dismissible fade show" role="alert">
         <?php
@@ -9,9 +10,9 @@
     </div>
 <?php } ?>
 
-<?php if (isset($_SESSION['error'])) { ?>
-
-    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+<?php 
+if (isset($_SESSION['error'])) { ?>
+    <div class="alert alert-danger alert-dismissible fade show m-4" role="alert">
         <?php
         echo $_SESSION['error'];
         unset($_SESSION['error']);

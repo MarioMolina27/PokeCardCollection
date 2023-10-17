@@ -1,4 +1,5 @@
 <?php
+session_start();
 function errorMessage($e)
 {
     if (!empty($e->errorInfo[1])) {
@@ -7,7 +8,7 @@ function errorMessage($e)
                 $mensaje = 'Registro duplicado';
                 break;
             case 1451:
-                $mensaje = 'Registro con elementos relacionados';
+                $mensaje = 'Para eliminar a ese Pokemon tienes que eliminar antes a su evolucion que depende de este o cambiar antes su preevolución.';
                 break;
             default:
                 $mensaje = $e->errorInfo[1] . ' - ' . $e->errorInfo[2];
