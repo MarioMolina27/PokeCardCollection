@@ -23,6 +23,7 @@
 
 <body>
     <main class="d-flex align-items-center">
+    <img class="pokeball-image" src="./img/pokeball.png" alt="">
         <div class="pokemonEditContainer w-75 p-5">
             <form id="myForm">
                 <div class="row g-3 headerPokemon">

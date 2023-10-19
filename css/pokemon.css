@@ -21,6 +21,11 @@ h2
     margin-bottom: 140px;
 }
 
+.headerPokemon
+{
+    margin-top: 110px;
+}
+
 .move1, .footerPokemon
 {
     margin-bottom: 40px;
@@ -53,7 +58,7 @@ h2
     top: 1px;
 }
 
-#myForm
+#myForm, .pokemonEditContainer
 {
     display: flex;
     flex-direction: column;
@@ -62,6 +67,12 @@ h2
 
 .pokemonEditContainer
 {
-    margin-top: 40px;
+    margin-top: 110px;
     margin-bottom: 80px;
 }
+
+.pokeball-image {
+    position: absolute;
+    height: 30vh;
+}
+
