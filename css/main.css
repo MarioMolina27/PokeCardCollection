@@ -1,0 +1,40 @@
+/************************************************* FONTS ******************************************************************************/
+@font-face 
+{
+    font-family: 'Futura'; 
+    src: url('../font/Futura Heavy font.ttf'); 
+}
+
+@font-face 
+{
+    font-family: 'Futura-Medium'; 
+    src: url('../font/futura medium bt.ttf'); 
+}
+/************************************************* BODY AND MAIN CONTAINERS **********************************************************/
+
+body 
+{
+    font-family: 'Futura';
+    margin: 0px;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    background-image: url("../img/background_light.jpeg");
+    justify-content: center;
+   
+}
+
+.fadeIn {
+    animation: fadeInAnimation 1s ease-in-out;
+}
+
+@keyframes fadeInAnimation {
+    0% {
+      opacity: 0;
+      filter: blur(10px);
+    }
+    100% {
+      opacity: 1;
+      filter: blur(10px);
+    }
+  }
