@@ -6,8 +6,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PokeCardCollector</title>
     <link rel="icon" type="image/x-icon" href="img/favicon.png">
-    <link rel="stylesheet" href="./css/card.css">
-    <link rel="stylesheet" href="./css/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
@@ -18,14 +16,16 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="./css/style.css">
     <link rel="stylesheet" href="./css/pokemon.css">
+    
 </head>
 
 <body>
-    <main class="d-flex align-items-center">
-    <img class="pokeball-image" src="./img/pokeball.png" alt="">
-        <div class="pokemonEditContainer w-75 p-5">
-            <form id="myForm">
+    <main>
+        <div class="pokemonEditContainer">
+        <img class="pokeball-image" src="./img/pokeball.svg" alt="">
+            <form id="myForm  w-75 p-5 d-flex align-items-center">
                 <div class="row g-3 headerPokemon">
                     <div class="row">
                         <h2>Header</h2>
@@ -70,8 +70,8 @@
                         <input class="form-control" type="file" id="formFile">
                     </div>
                     <div class="col-md-6">
-                        <label for="type" class="form-label mb-0">Number</label>
-                        <input class="form-control" type="number" id="type">
+                        <label for="numberPokemon" class="form-label mb-0">Number</label>
+                        <input class="form-control" type="number" id="numberPokemon">
                     </div>
                     <div class="col-md-6">
                         <label for="category" class="form-label mb-0">Category</label>
@@ -174,6 +174,7 @@
         </div>
         <p class="footer-copyright">&copy; 2023 mmolinab - Mario Molina</p>
     </footer>
+    <script src="./js/shakePokeball.js"></script>
 </body>
 
 </html>

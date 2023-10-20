@@ -23,7 +23,7 @@ h2
 
 .headerPokemon
 {
-    margin-top: 110px;
+    margin-top: 70px;
 }
 
 .move1, .footerPokemon
@@ -46,6 +46,8 @@ h2
     text-align: center;
     margin-top: 40px;
     margin: auto;
+    display: flex;
+    align-self: center;
 }
 
 .myButton:hover {
@@ -69,10 +71,70 @@ h2
 {
     margin-top: 110px;
     margin-bottom: 80px;
+    padding-right: 120px;
+    padding-left:120px;
 }
 
 .pokeball-image {
-    position: absolute;
-    height: 30vh;
+    z-index: 2;
+    margin: auto;
+    margin-top:-90px;
+    width: 170px;
+    cursor: pointer;
 }
+
+.pokeball-clicked
+{
+    animation-name: shake;
+    animation-duration: 4s;
+}
+
+main
+{
+    position: relative;
+    margin-left: 80px;
+    margin-right: 80px;
+    margin-bottom: 40px;
+}
+
+@keyframes shake
+{
+    from{
+        transform: none;
+    }
+
+    20%
+    {
+        transform: translate3d(-20%,0,0) rotate3d(0,0,1, -10deg);
+    }
+
+    40%
+    {
+        
+        transform: translate3d(20%,0,0) rotate3d(0,0,1, 50deg);
+    }
+
+    50%
+    {
+        transform: translate3d(-10%,0,0) rotate3d(0,0,1, -10deg);
+    }
+}
+
+@media screen and (max-width: 480px) {
+    main
+    {
+        margin-left: 20px;
+        margin-right: 20px;
+        margin-bottom: 10px;
+    }
+
+    .pokemonEditContainer
+    {
+        margin-top: 110px;
+        margin-bottom: 80px;
+        padding-right: 30px;
+        padding-left:30px;
+    }
+
+  }
 
