@@ -38,3 +38,8 @@ body
       filter: blur(10px);
     }
   }
+
+.no-found-pokemon-text
+{
+  font-size: 50px;
+}

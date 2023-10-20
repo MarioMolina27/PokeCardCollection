@@ -32,16 +32,15 @@ h2
 }
 
 .myButton {
-    box-shadow: 0px 4px 0px 0px #ff0026;
     background: linear-gradient(to bottom, #f7085b 5%, #bd2a45 100%);
     background-color: #f7085b;
     border-radius: 28px;
     border: 2px solid #96003f;
     cursor: pointer;
     color: #ffffff;
-    font-size: 17px;
-    padding: 16px 50px; 
-    text-decoration: none;
+    font-size: 20px;
+    font-weight: bold;
+    padding: 16px 80px; 
     text-shadow: 0px 1px 0px #f50e0a;
     text-align: center;
     margin-top: 40px;

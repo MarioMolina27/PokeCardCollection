@@ -61,12 +61,12 @@
             <div class="col d-flex">
                 <form action ="index.php" method="POST" class="w-100 d-flex">
                     <input type="text" class="form-control " placeholder="Name" aria-label="Pokemon Name" name="pokemon_name" value="<?php echo $pokemonSearch ?>">
-                    <button type="submit" class="btn btn-success"><i class="fa-solid fa-magnifying-glass"></i></button>
+                    <button type="submit" class="btn btn-danger"><i class="fa-solid fa-magnifying-glass"></i></button>
                 </form>
             </div>
             <div class="col d-flex justify-content-center">
                 <form method="POST" action="./pokemon.php">
-                    <button type="submit" class="btn btn-success btn-lg rounded-circle"><i class="fa-solid fa-plus"></i></button>
+                    <button type="submit" class="btn btn-danger btn-lg rounded-circle"><i class="fa-solid fa-plus"></i></button>
                 </form>
             </div>
 
@@ -80,13 +80,19 @@
                             </option>
                         <?php } ?>
                     </select>
-                    <button type="submit" class="btn btn-success"><i class="fa-solid fa-magnifying-glass"></i></button>
+                    <button type="submit" class="btn btn-danger"><i class="fa-solid fa-magnifying-glass"></i></button>
                 </form>
             </div>
         </div>
     </div>
     <?php require_once('php_partials/mensajes.php');?>
         <div class="project-container mb-5">
+            <?php 
+            if (empty($pokemons)) 
+            {
+                echo '<p class = "no-found-pokemon-text">No Pokemons found with the current search.</p>';
+            }
+            ?>
             <?php foreach ($pokemons as $pokemon) { 
                 $pokemonMoves = selectPokemonMoves($pokemon["id"]);
                 $pokemonTypes = selectTypeByPokemon($pokemon["id"]);
