@@ -208,6 +208,156 @@ function selectRegions()
     return $resultado;
 }
 
+function selectTypes()
+{
+    $conexion = openBd();
+
+    $sentenciaText = "select * from Tipo";
+    $sentencia = $conexion->prepare($sentenciaText);
+    $sentencia->execute();
+
+    $resultado = $sentencia->fetchAll();
+
+    $conexion = closeBd();
+
+    return $resultado;
+}
+
+function selectLastPokemonID()
+{
+    $conexion = openBd();
+
+    $sentenciaText = "SELECT MAX(id) AS id FROM Pokemon";
+    $sentencia = $conexion->prepare($sentenciaText);
+    $sentencia->execute();
+
+    $resultado = $sentencia->fetch();
+
+    $conexion = closeBd();
+
+    $idPokemon = $resultado['id'];
+
+    return $idPokemon;
+}
+
+function selectMoves()
+{
+    $conexion = openBd();
+
+    $sentenciaText = "select * from movimiento";
+    $sentencia = $conexion->prepare($sentenciaText);
+    $sentencia->execute();
+
+    $resultado = $sentencia->fetchAll();
+
+    $conexion = closeBd();
+
+    return $resultado;
+}
+
+
+function insertPokemon($nombre,$stage,$ilustrator,$hp,$descripcion,$categoria,$img,$img2,$altura,$peso,$numColeccion,$rareza,$idRegion,$idPre)
+{
+    try {
+        $conexion = openBd();
+        $sentenciaText = "INSERT INTO Pokemon (nombre, etapa, ilustrador, HP, descripcion, categoria, img, imgSecundaria, altura, peso, num_coleccion, rareza, ID_Region, ID_Preevolucion)
+        VALUES (:nombre, :stage, :ilustrator, :hp, :descripcion, :categoria, :img, :img2, :altura, :peso, :numColeccion, :rareza, :idRegion, :idPre);";
+        $sentencia = $conexion->prepare($sentenciaText);
+
+        $sentencia->bindParam(':nombre', $nombre);
+        $sentencia->bindParam(':stage', $stage);
+        $sentencia->bindParam(':ilustrator', $ilustrator);
+        $sentencia->bindParam(':hp', $hp);
+        $sentencia->bindParam(':descripcion', $descripcion);
+        $sentencia->bindParam(':categoria', $categoria);
+        $sentencia->bindParam(':img', $img);
+        $sentencia->bindParam(':img2', $img2);
+        $sentencia->bindParam(':altura', $altura);
+        $sentencia->bindParam(':peso', $peso);
+        $sentencia->bindParam(':numColeccion', $numColeccion);
+        $sentencia->bindParam(':rareza', $rareza);
+        $sentencia->bindParam(':idRegion', $idRegion);
+        $sentencia->bindParam(':idPre', $idPre);
+        $sentencia->execute();
+        $_SESSION['mensaje'] = 'Registro insertado correctemente';
+
+        $idPokemon = selectLastPokemonID();
+        insertTypePokemon($_POST['type'],$idPokemon);
+        insertMovesPokemon($_POST['fullMove1'],$idPokemon);
+        insertMovesPokemon($_POST['fullMove2'],$idPokemon);
+
+    } catch (PDOException $e) {
+        $_SESSION['error'] = errorMessage($e);
+
+        $pokemon = [
+            'nombre' => $nombre,
+            'stage' => $stage,
+            'ilustrator' => $ilustrator,
+            'hp' => $hp,
+            'descripcion' => $descripcion,
+            'categoria' => $categoria,
+            'img' => $img,
+            'img2' => $img2,
+            'altura' => $altura,
+            'peso' => $peso,
+            'numColeccion' => $numColeccion,
+            'rareza' => $rareza,
+            'idRegion' => $idRegion,
+            'idPre' => $idPre
+        ];
+
+        $_SESSION['pokemon'] = $pokemon;
+    }
+
+    $conexion = closeBd();
+}
+
+function insertTypePokemon($idTipo,$idPokemon) {
+    try {
+        $conexion = openBd();
+
+
+        $sentenciaText = "INSERT INTO Tipo_Pokemon (id_Pokemon, id_Tipo) 
+        VALUES (:idPokemon, :idTipo)";
+        
+        $sentencia = $conexion->prepare($sentenciaText);
+        
+        // Bind parameters
+        $sentencia->bindParam(':idPokemon', $idPokemon);
+        $sentencia->bindParam(':idTipo', $idTipo);
+        
+        $sentencia->execute();
+        
+        $_SESSION['success'] = "La relación Tipo_Pokemon se ha insertado correctamente.";
+    } catch (PDOException $e) {
+        // Manejo de errores en caso de que ocurra una excepción
+        $_SESSION['error'] = errorMessage($e);
+    }
+}
+
+function insertMovesPokemon($idMovimento,$idPokemon) {
+    try {
+        $conexion = openBd();
+
+
+        $sentenciaText = "INSERT INTO Movimiento_Pokemon (id_Pokemon, id_Movimiento) 
+        VALUES (:idPokemon, :idMovimiento)";
+        
+        $sentencia = $conexion->prepare($sentenciaText);
+        
+        // Bind parameters
+        $sentencia->bindParam(':idPokemon', $idPokemon);
+        $sentencia->bindParam(':idMovimiento', $idMovimento);
+        
+        $sentencia->execute();
+        
+        $_SESSION['success'] = "La relación Tipo_Pokemon se ha insertado correctamente.";
+    } catch (PDOException $e) {
+        // Manejo de errores en caso de que ocurra una excepción
+        $_SESSION['error'] = errorMessage($e);
+    }
+}
+
 function deletePokemon($id)
 {
     try 

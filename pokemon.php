@@ -1,3 +1,10 @@
+<?php 
+require_once('./php_libraries/bd.php');
+$regions = selectRegions();
+$types = selectTypes();
+$moves = selectMoves();
+$pokemons = selectPokemon();
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -23,42 +30,65 @@
 
 <body>
     <main>
+        <?php require_once('php_partials/mensajes.php');?>
         <div class="pokemonEditContainer">
         <img class="pokeball-image" src="./img/pokeball.svg" alt="">
-            <form id="myForm  w-75 p-5 d-flex align-items-center">
+            <form id="myForm  w-75 p-5 d-flex align-items-center" action="php_controllers/pokemonController.php" method="POST" enctype="multipart/form-data">
                 <div class="row g-3 headerPokemon">
                     <div class="row">
                         <h2>Header</h2>
                     </div>
                     <div class="col-md-6">
                         <label for="name" class="form-label mb-0">Name</label>
-                        <input type="text" class="form-control" id="name" placeholder="Name">
+                        <input type="text" class="form-control" id="name" name="name" placeholder="Name">
                     </div>
                     <div class="col-md-6">
                         <label for="type" class="form-label mb-0">Type</label>
-                        <select id="type" class="form-select">
-                            <option selected>Choose...</option>
-                            <option>...</option>
+                        <select id="type" class="form-select" name="type">
+                            <option hidden selected value value="0">Select one type</option>
+                            <?php foreach ($types as $type) { ?>
+                                <option value="<?php echo $type['id']; ?>">
+                                    <?php echo $type['nombre']; ?>
+                                </option>
+                            <?php } ?>
+                        </select>
+                    </div>
+                    <div class="col-12">
+                        <label for="region" class="form-label mb-0">Region</label>
+                        <select class="form-select" aria-label="Default select example" name="region">
+                            <option hidden selected value value="0">Select one region</option>
+                            <?php foreach ($regions as $region) { ?>
+                                <option value="<?php echo $region['id']; ?>">
+                                    <?php echo $region['nombre']; ?>
+                                </option>
+                            <?php } ?>
                         </select>
                     </div>
                     <div class="col-6">
                         <label for="stage" class="form-label mb-0">Stage</label>
-                        <select id="stage" class="form-select">
-                            <option selected>Choose...</option>
-                            <option>...</option>
+                        <select id="stage" class="form-select" name="stage">
+                            <option hidden selected value value="0">Select the stage</option>
+                            <option value ="Basic">BASIC</option>
+                            <option value ="Stage 1">STAGE 1</option>
+                            <option value ="Stage 2">STAGE 2</option>
                         </select>
+                    </div>
+                    <div class="col-6">
+                        <label for="hp" class="form-label mb-0">HP</label>
+                        <input type="number" class="form-control" id="hp" placeholder="ex.90" name="hp">
                     </div>
                     <div class="col-6 preevolution-input">
-                        <label for="hp" class="form-label mb-0">HP</label>
-                        <input type="text" class="form-control" id="hp" placeholder="ex.90">
-                    </div>
-                    <div class="col-6" hidden>
                         <label for="preevolution" class="form-label mb-0">Preevolution</label>
-                        <select id="preevolution" class="form-select">
-                            <option selected>Choose...</option>
-                            <option>...</option>
+                        <select id="preevolution" class="form-select" name="preevolution">
+                                <option hidden selected value value="0">Select one move</option>
+                                <?php foreach ($pokemons as $pokemon) { ?>
+                                    <option value="<?php echo $pokemon['id']; ?>">
+                                        <?php echo $pokemon['nombre']; ?>
+                                    </option>
+                                <?php } ?>
                         </select>
                     </div>
+                    
 
                 </div>
                 <div class="row g-3 imagePokemon">
@@ -66,24 +96,28 @@
                         <h2>Image</h2>
                     </div>
                     <div class="col-12">
-                        <label for="formFile" class="form-label mb-0">Image</label>
-                        <input class="form-control" type="file" id="formFile">
+                        <label for="imgPokemon" class="form-label mb-0">Image</label>
+                        <input class="form-control" type="file" id="imgPokemon" name="imgPokemon">
+                    </div>
+                    <div class="col-12">
+                        <label for="imgPokemon2" class="form-label mb-0">Secondary Image</label>
+                        <input class="form-control" type="file" id="imgPokemon2" name="imgPokemon2">
                     </div>
                     <div class="col-md-6">
                         <label for="numberPokemon" class="form-label mb-0">Number</label>
-                        <input class="form-control" type="number" id="numberPokemon">
+                        <input class="form-control" type="number" id="numberPokemon" name ="numberPokemon">
                     </div>
                     <div class="col-md-6">
                         <label for="category" class="form-label mb-0">Category</label>
-                        <input class="form-control" type="text" id="category" placeholder="ex.Penguin Pokemon">
+                        <input class="form-control" type="text" id="category" placeholder="ex.Penguin Pokemon" name="category">
                     </div>
                     <div class="col-md-6">
                         <label for="height" class="form-label mb-0">Height</label>
-                        <input class="form-control" type="number" step="2" id="height">
+                        <input class="form-control" type="number" id="height" name ="height">
                     </div>
                     <div class="col-md-6">
                         <label for="weight" class="form-label mb-0">Weight</label>
-                        <input class="form-control" type="number" step="2" id="weight">
+                        <input class="form-control" type="number"  id="weight" name ="weight">
                     </div>
                 </div>
                 <div class="row g-3 movesPokemon">
@@ -91,47 +125,32 @@
                         <h2>Moves</h2>
                     </div>
                     <div class="row g-3 move1">
-                        <div class="col-md-4">
-                            <label for="movetype" class="form-label mb-0">Type</label>
-                            <select id="movetype" class="form-select">
-                                <option selected>Choose...</option>
-                                <option>...</option>
+                        <div class="col-12">
+                            <label for="fullMove1" class="form-label mb-0">Move 1</label>
+                            <select id="fullMove1" class="form-select" name ="fullMove1">
+                                <option hidden selected value value="0">Select one move</option>
+                                <?php foreach ($moves as $move) { ?>
+                                    <option value="<?php echo $move['id']; ?>">
+                                        <?php echo $move['nombre']; ?>
+                                    </option>
+                                <?php } ?>
                             </select>
-                        </div>
-                        <div class="col-md-4">
-                            <label for="namemove" class="form-label mb-0">Name</label>
-                            <input type="text" class="form-control" id="namemove" placeholder="Name">
-                        </div>
-                        <div class="col-md-4">
-                            <label for="damagemove" class="form-label mb-0">Damage</label>
-                            <input type="text" class="form-control" id="damagemove" placeholder="Damage">
-                        </div>
-                        <div class="col-md-12">
-                            <label for="effectmove" class="form-label mb-0">Effect</label>
-                            <input class="form-control" type="text" id="effectmove">
                         </div>
                     </div>
                     <div class="row g-3 move2">
-                        <div class="col-md-4">
-                            <label for="movetype2" class="form-label mb-0">Type</label>
-                            <select id="movetype2" class="form-select">
-                                <option selected>Choose...</option>
-                                <option>...</option>
+                        <div class="col-12">
+                            <label for="fullMove2" class="form-label mb-0">Move 2</label>
+                            <select id="fullMove2" class="form-select" name ="fullMove2">
+                                <option hidden selected value value="0">Select one move</option>
+                                <?php foreach ($moves as $move) { ?>
+                                    <option value="<?php echo $move['id']; ?>">
+                                        <?php echo $move['nombre']; ?>
+                                    </option>
+                                <?php } ?>
                             </select>
                         </div>
-                        <div class="col-md-4">
-                            <label for="namemove2" class="form-label mb-0">Name</label>
-                            <input type="text" class="form-control" id="namemove2" placeholder="Name">
-                        </div>
-                        <div class="col-md-4">
-                            <label for="damagemove2" class="form-label mb-0">Damage</label>
-                            <input type="text" class="form-control" id="damagemove2" placeholder="Damage">
-                        </div>
-                        <div class="col-md-12">
-                            <label for="effectmove2" class="form-label mb-0">Effect</label>
-                            <input class="form-control" type="text" id="effectmove2">
-                        </div>
                     </div>
+                
                 </div>
                 <div class="row g-3 footerPokemon">
                     <div class="row">
@@ -139,25 +158,27 @@
                     </div>
                     <div class="col-md-6">
                         <label for="ilustrator" class="form-label mb-0">Ilustrator</label>
-                        <input type="text" class="form-control" id="ilustrator" placeholder="Ilustrator">
+                        <input type="text" class="form-control" id="ilustrator" placeholder="Ilustrator" name="ilustrator">
                     </div>
                     <div class="col-md-6">
                         <label for="description" class="form-label mb-0">Description</label>
-                        <input type="text" class="form-control" id="description" placeholder="Description">
+                        <input type="text" class="form-control" id="description" placeholder="Description" name="description">
                     </div>
                     <div class="col-md-6">
                         <label for="rarity" class="form-label mb-0">Rarity</label>
-                        <select id="rarity" class="form-select">
-                            <option selected>Choose...</option>
-                            <option>...</option>
+                        <select id="rarity" class="form-select" name="rarity">
+                            <option hidden selected value>Chose the rarity</option>
+                            <option value ="Common">Common</option>
+                            <option value ="Uncommon">Uncommon</option>
+                            <option value ="Rare">Rare</option>
                         </select>
                     </div>
                     <div class="col-md-6">
                         <label for="collector-num" class="form-label mb-0">Colector number</label>
-                        <input type="text" class="form-control" id="collector-num" placeholder="Number">
+                        <input type="number" class="form-control" id="collector-num" placeholder="Number" name="collector-num">
                     </div>
                 </div>
-                <button type="submit" class="myButton">SAVE</button>
+                <button type="submit" name ="insert" class="myButton">SAVE</button>
         </div>
         </form>
         </div>

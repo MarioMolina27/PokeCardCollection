@@ -90,7 +90,7 @@
             <?php 
             if (empty($pokemons)) 
             {
-                echo '<p class = "no-found-pokemon-text">No Pokemons found with the current search.</p>';
+                echo '<p class = "no-found-pokemon-text">No Pokemons found with the current search<br>Try another search.</p>';
             }
             ?>
             <?php foreach ($pokemons as $pokemon) { 
