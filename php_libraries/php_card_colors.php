@@ -3,6 +3,8 @@ function getHexColor($type) {
     $type = strtolower($type); 
 
     switch ($type) {
+        case "normal":
+            return "#CFCFCF";
         case "water":
             return "#65b9e3";
         case "fire":
