@@ -124,9 +124,14 @@ $pokemons = selectPokemon();
                         </select>
                     </div>
                     <div class="col-6">
+                        <label for="hp" class="form-label mb-0">HP</label>
+                        <input type="number" class="form-control" id="hp" placeholder="ex.90" name="hp"
+                            value="<?php echo $pokemon["hp"] ?>">
+                    </div>
+                    <div class="col-6">
                         <label for="stage" class="form-label mb-0">Stage</label>
                         <select id="stage" class="form-select" name="stage">
-                            <option hidden selected value="0">Select the stage</option>
+                            <option hidden selected value="Basic">Select the stage</option>
                             <option value="Basic" <?php if ($pokemon['stage'] == "Basic")
                                 echo 'selected'; ?>>BASIC</option>
                             <option value="Stage 1" <?php if ($pokemon['stage'] == "Stage 1")
@@ -135,12 +140,7 @@ $pokemons = selectPokemon();
                                 echo 'selected'; ?>>STAGE 2</option>
                         </select>
                     </div>
-                    <div class="col-6">
-                        <label for="hp" class="form-label mb-0">HP</label>
-                        <input type="number" class="form-control" id="hp" placeholder="ex.90" name="hp"
-                            value="<?php echo $pokemon["hp"] ?>">
-                    </div>
-                    <div class="col-6 preevolution-input">
+                    <div class="col-6" id="preevolution-input">
                         <label for="preevolution" class="form-label mb-0">Preevolution</label>
                         <select id="preevolution" class="form-select" name="preevolution">
                             <option hidden selected value="null">Select the preevolution</option>
@@ -265,6 +265,7 @@ $pokemons = selectPokemon();
         <p class="footer-copyright">&copy; 2023 mmolinab - Mario Molina</p>
     </footer>
     <script src="./js/shakePokeball.js"></script>
+    <script src="./js/stage.js"></script>
 </body>
 
 </html>
