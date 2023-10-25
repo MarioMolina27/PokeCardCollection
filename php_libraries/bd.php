@@ -72,9 +72,9 @@ function selectPokemonByName($name)
 
     $sentenciaText = "SELECT * FROM pokemon WHERE nombre LIKE :name";
     $sentencia = $conexion->prepare($sentenciaText);
-    
+
     $name = '%' . $name . '%';
-    
+
     $sentencia->bindParam(':name', $name);
     $sentencia->execute();
 
@@ -91,7 +91,7 @@ function selectPokemonByRegion($id)
 
     $sentenciaText = "SELECT * FROM pokemon WHERE ID_Region = :id";
     $sentencia = $conexion->prepare($sentenciaText);
-    
+
     $sentencia->bindParam(':id', $id);
     $sentencia->execute();
 
@@ -124,7 +124,8 @@ function selectPokemonMoves($id_pokemon)
     $conexion = openBd();
 
     $sentenciaText = "
-        SELECT Movimiento.nombre AS movimiento_nombre, 
+        SELECT Movimiento.id AS id,
+        Movimiento.nombre AS movimiento_nombre, 
         Movimiento.daño, 
         Movimiento.efecto, 
         Movimiento.ID_Tipo, 
@@ -256,7 +257,7 @@ function selectMoves()
 }
 
 
-function insertPokemon($nombre,$stage,$ilustrator,$hp,$descripcion,$categoria,$img,$img2,$altura,$peso,$numColeccion,$rareza,$idRegion,$idPre)
+function insertPokemon($nombre, $stage, $ilustrator, $hp, $descripcion, $categoria, $img, $img2, $altura, $peso, $numColeccion, $rareza, $idRegion, $idPre)
 {
     try {
         $conexion = openBd();
@@ -264,8 +265,7 @@ function insertPokemon($nombre,$stage,$ilustrator,$hp,$descripcion,$categoria,$i
         VALUES (:nombre, :stage, :ilustrator, :hp, :descripcion, :categoria, :img, :img2, :altura, :peso, :numColeccion, :rareza, :idRegion, :idPre);";
         $sentencia = $conexion->prepare($sentenciaText);
 
-        if($stage == "Basic")
-        {
+        if ($stage == "Basic") {
             $idPre = null;
         }
 
@@ -288,53 +288,64 @@ function insertPokemon($nombre,$stage,$ilustrator,$hp,$descripcion,$categoria,$i
 
         $pokemon = [
             'nombre' => $nombre,
-            'stage' => $stage,
-            'ilustrator' => $ilustrator,
-            'hp' => $hp,
+            'etapa' => $stage,
+            'ilustrador' => $ilustrator,
+            'HP' => $hp,
             'descripcion' => $descripcion,
             'categoria' => $categoria,
             'img' => $img,
             'img2' => $img2,
             'altura' => $altura,
             'peso' => $peso,
-            'numColeccion' => $numColeccion,
+            'num_coleccion' => $numColeccion,
             'rareza' => $rareza,
-            'idRegion' => $idRegion,
-            'idPre' => $idPre,
+            'ID_Region' => $idRegion,
+            'ID_Preevolucion' => $idPre,
         ];
+
         $idPokemon = selectLastPokemonID();
-        insertTypePokemon($_POST['type'],$idPokemon,$pokemon );
-        insertMovesPokemon($_POST['fullMove1'],$idPokemon,$pokemon);
-        insertMovesPokemon($_POST['fullMove2'],$idPokemon,$pokemon);
+        insertTypePokemon($_POST['type'], $idPokemon, $pokemon);
+        insertMovesPokemon($_POST['fullMove1'], $idPokemon, $pokemon);
+        insertMovesPokemon($_POST['fullMove2'], $idPokemon, $pokemon);
 
     } catch (PDOException $e) {
         $_SESSION['error'] = errorMessage($e);
 
         $pokemon = [
             'nombre' => $nombre,
-            'stage' => $stage,
-            'ilustrator' => $ilustrator,
-            'hp' => $hp,
+            'etapa' => $stage,
+            'ilustrador' => $ilustrator,
+            'HP' => $hp,
             'descripcion' => $descripcion,
             'categoria' => $categoria,
             'img' => $img,
-            'img2' => $img2,
+            'imgSecundaria' => $img2,
             'altura' => $altura,
             'peso' => $peso,
-            'numColeccion' => $numColeccion,
+            'num_coleccion' => $numColeccion,
             'rareza' => $rareza,
-            'idRegion' => $idRegion,
-            'idPre' => $idPre,
+            'ID_Region' => $idRegion,
+            'ID_Preevolucion' => $idPre,
         ];
-        $pokemonTypes = 
-        [
-            'type1'=> $_POST['type'],
-            'type2'=> '',
-        ];
-        $pokemonMoves =
-        [
-            "move1" => $_POST['fullMove1'],
-            "move2" => $_POST['fullMove2'],
+        $pokemonTypes =
+            [
+                [
+                    'id' => $_POST['type'],
+                ],
+                [
+                    'id' => '',
+                ]
+            ];
+
+        $pokemonMoves = [
+            [
+                'id' => $_POST['fullMove1'],
+                'movimiento_nombre' => '',
+            ],
+            [
+                'id' => $_POST['fullMove2'],
+                'movimiento_nombre' => '',
+            ]
         ];
 
         $_SESSION['pokemon'] = $pokemon;
@@ -345,52 +356,59 @@ function insertPokemon($nombre,$stage,$ilustrator,$hp,$descripcion,$categoria,$i
     $conexion = closeBd();
 }
 
-function insertTypePokemon($idTipo,$idPokemon,$pokemon) {
-    try 
-    {
+function insertTypePokemon($idTipo, $idPokemon, $pokemon)
+{
+    try {
         $conexion = openBd();
 
 
         $sentenciaText = "INSERT INTO Tipo_Pokemon (id_Pokemon, id_Tipo) 
         VALUES (:idPokemon, :idTipo)";
-        
+
         $sentencia = $conexion->prepare($sentenciaText);
-        
+
         // Bind parameters
         $sentencia->bindParam(':idPokemon', $idPokemon);
         $sentencia->bindParam(':idTipo', $idTipo);
-        
+
         $sentencia->execute();
-        
+
         $_SESSION['success'] = "La relación Tipo_Pokemon se ha insertado correctamente.";
-    } 
-    catch (PDOException $e) 
-    {
+    } catch (PDOException $e) {
         $pokemon = [
             'nombre' => $pokemon["nombre"],
-            'stage' => $pokemon["stage"],
-            'ilustrator' => $pokemon["ilustrator"],
-            'hp' => $pokemon["hp"],
+            'etapa' => $pokemon["etapa"],
+            'ilustrador' => $pokemon["ilustrador"],
+            'HP' => $pokemon["HP"],
             'descripcion' => $pokemon["descripcion"],
             'categoria' => $pokemon["categoria"],
             'img' => $pokemon["img"],
-            'img2' => $pokemon["img2"],
+            'imgSecundaria' => $pokemon["imgSecundaria"],
             'altura' => $pokemon["altura"],
             'peso' => $pokemon["peso"],
-            'numColeccion' => $pokemon["numColeccion"],
+            'num_coleccion' => $pokemon["num_coleccion"],
             'rareza' => $pokemon["rareza"],
-            'idRegion' => $pokemon["idRegion"],
-            'idPre' => $pokemon["idPre"],
+            'ID_Region' => $pokemon["ID_Region"],
+            'ID_Preevolucion' => $pokemon["ID_Preevolucion"],
         ];
-        $pokemonTypes = 
-        [
-            'type1'=> $_POST['type'],
-            'type2'=> '',
-        ];
-        $pokemonMoves =
-        [
-            "move1" => $_POST['fullMove1'],
-            "move2" => $_POST['fullMove2'],
+        $pokemonTypes =
+            [
+                [
+                    'id' => $_POST['type'],
+                ],
+                [
+                    'id' => '',
+                ]
+            ];
+        $pokemonMoves = [
+            [
+                'id' => $_POST['fullMove1'],
+                'movimiento_nombre' => '',
+            ],
+            [
+                'id' => $_POST['fullMove2'],
+                'movimiento_nombre' => '',
+            ]
         ];
 
         $_SESSION['pokemon'] = $pokemon;
@@ -401,51 +419,60 @@ function insertTypePokemon($idTipo,$idPokemon,$pokemon) {
     }
 }
 
-function insertMovesPokemon($idMovimento,$idPokemon,$pokemon) {
+function insertMovesPokemon($idMovimento, $idPokemon, $pokemon)
+{
     try {
         $conexion = openBd();
 
 
         $sentenciaText = "INSERT INTO Movimiento_Pokemon (id_Pokemon, id_Movimiento) 
         VALUES (:idPokemon, :idMovimiento)";
-        
+
         $sentencia = $conexion->prepare($sentenciaText);
-        
+
         // Bind parameters
         $sentencia->bindParam(':idPokemon', $idPokemon);
         $sentencia->bindParam(':idMovimiento', $idMovimento);
-        
+
         $sentencia->execute();
-        
+
         $_SESSION['success'] = "La relación Tipo_Pokemon se ha insertado correctamente.";
-    } 
-    catch (PDOException $e) 
-    {
+    } catch (PDOException $e) {
         $pokemon = [
             'nombre' => $pokemon["nombre"],
-            'stage' => $pokemon["stage"],
-            'ilustrator' => $pokemon["ilustrator"],
-            'hp' => $pokemon["hp"],
+            'etapa' => $pokemon["etapa"],
+            'ilustrador' => $pokemon["ilustrador"],
+            'HP' => $pokemon["HP"],
             'descripcion' => $pokemon["descripcion"],
             'categoria' => $pokemon["categoria"],
             'img' => $pokemon["img"],
-            'img2' => $pokemon["img2"],
+            'imgSecundaria' => $pokemon["imgSecundaria"],
             'altura' => $pokemon["altura"],
             'peso' => $pokemon["peso"],
-            'numColeccion' => $pokemon["numColeccion"],
+            'num_coleccion' => $pokemon["num_coleccion"],
             'rareza' => $pokemon["rareza"],
-            'idRegion' => $pokemon["idRegion"],
-            'idPre' => $pokemon["idPre"],
+            'ID_Region' => $pokemon["ID_Region"],
+            'ID_Preevolucion' => $pokemon["idPre"],
         ];
-        $pokemonTypes = 
-        [
-            'type1'=> $_POST['type'],
-            'type2'=> '',
-        ];
-        $pokemonMoves =
-        [
-            "move1" => $_POST['fullMove1'],
-            "move2" => $_POST['fullMove2'],
+        $pokemonTypes =
+            [
+                [
+                    'id' => $_POST['type'],
+                ],
+                [
+                    'id' => '',
+                ]
+            ];
+
+        $pokemonMoves = [
+            [
+                'id' => $_POST['fullMove1'],
+                'movimiento_nombre' => '',
+            ],
+            [
+                'id' => $_POST['fullMove2'],
+                'movimiento_nombre' => '',
+            ]
         ];
 
         $_SESSION['pokemon'] = $pokemon;
@@ -457,20 +484,77 @@ function insertMovesPokemon($idMovimento,$idPokemon,$pokemon) {
 
 function deletePokemon($id)
 {
-    try 
-    {
+    try {
         $conexion = openBd();
         $sentenciaText = "delete from pokemon where id = :id";
         $sentencia = $conexion->prepare($sentenciaText);
         $sentencia->bindParam(':id', $id);
         $sentencia->execute();
 
-    } 
-    catch (PDOException $e) 
-    {
+    } catch (PDOException $e) {
         $_SESSION['error'] = errorMessage($e);
     }
 
     $conexion = closeBd();
+}
+
+function uploadAllFotos()
+{
+    uploadImage("imgPokemon");
+    if (!isset($_SESSION['error'])) 
+    {
+        uploadImage("imgPokemon2");
+        if (isset($_SESSION['error'])) 
+        {
+            errorUploadFotoSession();
+        }
+    } 
+    else 
+    {
+        errorUploadFotoSession();
+    }
+}
+
+function errorUploadFotoSession()
+{
+    $pokemonTypes =
+        [
+            [
+                'id' => $_POST['type'],
+            ],
+            [
+                'id' => '',
+            ]
+        ];
+    $pokemonMoves = [
+        [
+            'id' => $_POST['fullMove1'],
+            'movimiento_nombre' => '',
+        ],
+        [
+            'id' => $_POST['fullMove2'],
+            'movimiento_nombre' => '',
+        ]
+    ];
+    $pokemon = [
+        'nombre' => $_POST['name'],
+        'etapa' => $_POST['stage'],
+        'ilustrador' => $_POST['ilustrator'],
+        'HP' => $_POST['hp'],
+        'descripcion' => $_POST['description'],
+        'categoria' => $_POST['category'],
+        'img' => $_FILES["imgPokemon"]["name"],
+        'imgSecundaria' => $_FILES['imgPokemon2']['name'],
+        'altura' => $_POST['height'],
+        'peso' => $_POST['weight'],
+        'num_coleccion' => $_POST['collector-num'],
+        'rareza' => $_POST['rarity'],
+        'ID_Region' => $_POST['region'],
+        'ID_Preevolucion' => $_POST['preevolution']
+    ];
+
+    $_SESSION['pokemon'] = $pokemon;
+    $_SESSION['pokemonTypes'] = $pokemonTypes;
+    $_SESSION['pokemonMoves'] = $pokemonMoves;
 }
 ?>

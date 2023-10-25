@@ -41,13 +41,4 @@
             exit();
         }
     }
-
-    function uploadAllFotos()
-    {
-        uploadImage("imgPokemon");
-        if(!isset($_SESSION['error']))
-        {
-            uploadImage("imgPokemon2");
-        }
-    }
 ?>

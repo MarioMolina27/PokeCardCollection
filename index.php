@@ -201,9 +201,12 @@
                         </div>
                     </div>
                     <div class="button-container">
-                        <form action="">
+                        <form action="./pokemon.php" method="POST">
                             <input type="hidden" name="pokemon_id_edit" value="<?php echo $pokemon['id']?>">
-                            <button type="submit" class="btn btn-dark"><i class="fa-solid fa-pencil"></i> | Edit</button>
+                            <input type="hidden" name="moves_data" value='<?php echo htmlentities(serialize($pokemonMoves)); ?>'>
+                            <input type="hidden" name="type_data" value='<?php echo htmlentities(serialize($pokemonTypes)); ?>'>
+                            <input type="hidden" name="pokemon_data" value='<?php echo htmlentities(serialize($pokemon)); ?>'>
+                            <button type="submit" class="btn btn-dark" name ="edit"><i class="fa-solid fa-pencil"></i> | Edit</button>
                         </form>
                         <form action="php_controllers/pokemonController.php" method="POST">
                             <input type="hidden" name="pokemon_id_delete" value="<?php echo $pokemon['id']?>">
