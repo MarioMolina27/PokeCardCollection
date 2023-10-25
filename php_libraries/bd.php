@@ -308,49 +308,11 @@ function insertPokemon($nombre, $stage, $ilustrator, $hp, $descripcion, $categor
         insertMovesPokemon($_POST['fullMove1'], $idPokemon, $pokemon);
         insertMovesPokemon($_POST['fullMove2'], $idPokemon, $pokemon);
 
-    } catch (PDOException $e) {
+    } 
+    catch (PDOException $e) {
         $_SESSION['error'] = errorMessage($e);
 
-        $pokemon = [
-            'nombre' => $nombre,
-            'etapa' => $stage,
-            'ilustrador' => $ilustrator,
-            'HP' => $hp,
-            'descripcion' => $descripcion,
-            'categoria' => $categoria,
-            'img' => $img,
-            'imgSecundaria' => $img2,
-            'altura' => $altura,
-            'peso' => $peso,
-            'num_coleccion' => $numColeccion,
-            'rareza' => $rareza,
-            'ID_Region' => $idRegion,
-            'ID_Preevolucion' => $idPre,
-        ];
-        $pokemonTypes =
-            [
-                [
-                    'id' => $_POST['type'],
-                ],
-                [
-                    'id' => '',
-                ]
-            ];
-
-        $pokemonMoves = [
-            [
-                'id' => $_POST['fullMove1'],
-                'movimiento_nombre' => '',
-            ],
-            [
-                'id' => $_POST['fullMove2'],
-                'movimiento_nombre' => '',
-            ]
-        ];
-
-        $_SESSION['pokemon'] = $pokemon;
-        $_SESSION['pokemonTypes'] = $pokemonTypes;
-        $_SESSION['pokemonMoves'] = $pokemonMoves;
+        setPokemonSessionData($nombre, $stage, $ilustrator, $hp, $descripcion, $categoria, $img, $img2, $altura, $peso, $numColeccion, $rareza, $idRegion, $idPre, $_POST['type'], $_POST['fullMove1'], $_POST['fullMove2']);
     }
 
     $conexion = closeBd();
@@ -374,46 +336,10 @@ function insertTypePokemon($idTipo, $idPokemon, $pokemon)
         $sentencia->execute();
 
         $_SESSION['success'] = "La relación Tipo_Pokemon se ha insertado correctamente.";
-    } catch (PDOException $e) {
-        $pokemon = [
-            'nombre' => $pokemon["nombre"],
-            'etapa' => $pokemon["etapa"],
-            'ilustrador' => $pokemon["ilustrador"],
-            'HP' => $pokemon["HP"],
-            'descripcion' => $pokemon["descripcion"],
-            'categoria' => $pokemon["categoria"],
-            'img' => $pokemon["img"],
-            'imgSecundaria' => $pokemon["imgSecundaria"],
-            'altura' => $pokemon["altura"],
-            'peso' => $pokemon["peso"],
-            'num_coleccion' => $pokemon["num_coleccion"],
-            'rareza' => $pokemon["rareza"],
-            'ID_Region' => $pokemon["ID_Region"],
-            'ID_Preevolucion' => $pokemon["ID_Preevolucion"],
-        ];
-        $pokemonTypes =
-            [
-                [
-                    'id' => $_POST['type'],
-                ],
-                [
-                    'id' => '',
-                ]
-            ];
-        $pokemonMoves = [
-            [
-                'id' => $_POST['fullMove1'],
-                'movimiento_nombre' => '',
-            ],
-            [
-                'id' => $_POST['fullMove2'],
-                'movimiento_nombre' => '',
-            ]
-        ];
-
-        $_SESSION['pokemon'] = $pokemon;
-        $_SESSION['pokemonTypes'] = $pokemonTypes;
-        $_SESSION['pokemonMoves'] = $pokemonMoves;
+    } 
+    catch (PDOException $e) 
+    {
+        setPokemonSessionData($pokemon["nombre"], $pokemon["etapa"], $pokemon["ilustrador"], $pokemon["HP"], $pokemon["descripcion"], $pokemon["categoria"], $pokemon["img"], $pokemon["imgSecundaria"], $pokemon["altura"], $pokemon["peso"], $pokemon["num-coleccion"], $pokemon["rareza"], $pokemon["ID_Region"], $pokemon["ID_Preevolucion"], $_POST['type'], $_POST['fullMove1'], $_POST['fullMove2']);
 
         $_SESSION['error'] = errorMessage($e);
     }
@@ -437,48 +363,11 @@ function insertMovesPokemon($idMovimento, $idPokemon, $pokemon)
         $sentencia->execute();
 
         $_SESSION['success'] = "La relación Tipo_Pokemon se ha insertado correctamente.";
-    } catch (PDOException $e) {
-        $pokemon = [
-            'nombre' => $pokemon["nombre"],
-            'etapa' => $pokemon["etapa"],
-            'ilustrador' => $pokemon["ilustrador"],
-            'HP' => $pokemon["HP"],
-            'descripcion' => $pokemon["descripcion"],
-            'categoria' => $pokemon["categoria"],
-            'img' => $pokemon["img"],
-            'imgSecundaria' => $pokemon["imgSecundaria"],
-            'altura' => $pokemon["altura"],
-            'peso' => $pokemon["peso"],
-            'num_coleccion' => $pokemon["num_coleccion"],
-            'rareza' => $pokemon["rareza"],
-            'ID_Region' => $pokemon["ID_Region"],
-            'ID_Preevolucion' => $pokemon["idPre"],
-        ];
-        $pokemonTypes =
-            [
-                [
-                    'id' => $_POST['type'],
-                ],
-                [
-                    'id' => '',
-                ]
-            ];
-
-        $pokemonMoves = [
-            [
-                'id' => $_POST['fullMove1'],
-                'movimiento_nombre' => '',
-            ],
-            [
-                'id' => $_POST['fullMove2'],
-                'movimiento_nombre' => '',
-            ]
-        ];
-
-        $_SESSION['pokemon'] = $pokemon;
-        $_SESSION['pokemonTypes'] = $pokemonTypes;
-        $_SESSION['pokemonMoves'] = $pokemonMoves;
+    } 
+    catch (PDOException $e) {
         $_SESSION['error'] = errorMessage($e);
+        setPokemonSessionData($pokemon["nombre"], $pokemon["etapa"], $pokemon["ilustrador"], $pokemon["HP"], $pokemon["descripcion"], $pokemon["categoria"], $pokemon["img"], $pokemon["imgSecundaria"], $pokemon["altura"], $pokemon["peso"], $pokemon["num-coleccion"], $pokemon["rareza"], $pokemon["ID_Region"], $pokemon["ID_Preevolucion"], $_POST['type'], $_POST['fullMove1'], $_POST['fullMove2']);
+        
     }
 }
 
@@ -551,6 +440,172 @@ function errorUploadFotoSession()
         'rareza' => $_POST['rarity'],
         'ID_Region' => $_POST['region'],
         'ID_Preevolucion' => $_POST['preevolution']
+    ];
+
+    $_SESSION['pokemon'] = $pokemon;
+    $_SESSION['pokemonTypes'] = $pokemonTypes;
+    $_SESSION['pokemonMoves'] = $pokemonMoves;
+}
+
+function updatePokemon($id, $nombre, $stage, $ilustrator, $hp, $descripcion, $categoria, $img, $img2, $altura, $peso, $numColeccion, $rareza, $idRegion, $idPre) {
+    try {
+        $conexion = openBd();
+        $sentenciaText = "UPDATE Pokemon 
+                         SET nombre = :nombre, 
+                             etapa = :stage, 
+                             ilustrador = :ilustrator, 
+                             HP = :hp, 
+                             descripcion = :descripcion, 
+                             categoria = :categoria, 
+                             img = :img, 
+                             imgSecundaria = :img2, 
+                             altura = :altura, 
+                             peso = :peso, 
+                             num_coleccion = :numColeccion, 
+                             rareza = :rareza, 
+                             ID_Region = :idRegion, 
+                             ID_Preevolucion = :idPre 
+                         WHERE id = :id";
+        $sentencia = $conexion->prepare($sentenciaText);
+
+        if ($stage == "Basic") {
+            $idPre = null;
+        }
+
+        $sentencia->bindParam(':nombre', $nombre);
+        $sentencia->bindParam(':stage', $stage);
+        $sentencia->bindParam(':ilustrator', $ilustrator);
+        $sentencia->bindParam(':hp', $hp);
+        $sentencia->bindParam(':descripcion', $descripcion);
+        $sentencia->bindParam(':categoria', $categoria);
+        $sentencia->bindParam(':img', $img);
+        $sentencia->bindParam(':img2', $img2);
+        $sentencia->bindParam(':altura', $altura);
+        $sentencia->bindParam(':peso', $peso);
+        $sentencia->bindParam(':numColeccion', $numColeccion);
+        $sentencia->bindParam(':rareza', $rareza);
+        $sentencia->bindParam(':idRegion', $idRegion);
+        $sentencia->bindParam(':idPre', $idPre);
+        $sentencia->bindParam(':id', $id);
+        $sentencia->execute();
+        
+        $_SESSION['mensaje'] = 'Registro actualizado correctamente';
+
+        $pokemon = [
+            'nombre' => $nombre,
+            'etapa' => $stage,
+            'ilustrador' => $ilustrator,
+            'HP' => $hp,
+            'descripcion' => $descripcion,
+            'categoria' => $categoria,
+            'img' => $img,
+            'img2' => $img2,
+            'altura' => $altura,
+            'peso' => $peso,
+            'num_coleccion' => $numColeccion,
+            'rareza' => $rareza,
+            'ID_Region' => $idRegion,
+            'ID_Preevolucion' => $idPre,
+        ];
+
+        insertTypePokemon($_POST['type'], $id, $pokemon);
+        insertMovesPokemon($_POST['fullMove1'], $id, $pokemon);
+        insertMovesPokemon($_POST['fullMove2'], $id, $pokemon);
+
+    } 
+    catch (PDOException $e) 
+    {
+        $_SESSION['error'] = errorMessage($e);
+
+        setPokemonSessionData($nombre, $stage, $ilustrator, $hp, $descripcion, $categoria, $img, $img2, $altura, $peso, $numColeccion, $rareza, $idRegion, $idPre, $_POST['type'], $_POST['fullMove1'], $_POST['fullMove2']);
+        
+    }
+
+    $conexion = closeBd();
+}
+
+function updateTypePokemon($idPokemon, $idTipo, $pokemon) {
+    try {
+        $conexion = openBd();
+
+        $sentenciaText = "UPDATE Tipo_Pokemon 
+                         SET id_Tipo = :idTipo
+                         WHERE id_Pokemon = :idPokemon";
+        $sentencia = $conexion->prepare($sentenciaText);
+
+        $sentencia->bindParam(':idTipo', $idTipo);
+        $sentencia->bindParam(':idPokemon', $idPokemon);
+
+        $sentencia->execute();
+
+        $_SESSION['success'] = "La relación Tipo_Pokemon se ha actualizado correctamente.";
+    } 
+    catch (PDOException $e) {
+        $_SESSION['error'] = errorMessage($e);
+        setPokemonSessionData($pokemon["nombre"], $pokemon["etapa"], $pokemon["ilustrador"], $pokemon["HP"], $pokemon["descripcion"], $pokemon["categoria"], $pokemon["img"], $pokemon["imgSecundaria"], $pokemon["altura"], $pokemon["peso"], $pokemon["num-coleccion"], $pokemon["rareza"], $pokemon["ID_Region"], $pokemon["ID_Preevolucion"], $_POST['type'], $_POST['fullMove1'], $_POST['fullMove2']);
+    }
+}
+
+function updateMovesPokemon($idMovimiento, $idPokemon, $pokemon) {
+    try {
+        $conexion = openBd();
+
+        $sentenciaText = "UPDATE Movimiento_Pokemon 
+                         SET id_Movimiento = :idMovimiento
+                         WHERE id_Pokemon = :idPokemon";
+        $sentencia = $conexion->prepare($sentenciaText);
+
+        // Bind parameters
+        $sentencia->bindParam(':idMovimiento', $idMovimiento);
+        $sentencia->bindParam(':idPokemon', $idPokemon);
+
+        $sentencia->execute();
+
+        $_SESSION['success'] = "La relación Movimiento_Pokemon se ha actualizado correctamente.";
+    } 
+    catch (PDOException $e) 
+    {
+        setPokemonSessionData($pokemon["nombre"], $pokemon["etapa"], $pokemon["ilustrador"], $pokemon["HP"], $pokemon["descripcion"], $pokemon["categoria"], $pokemon["img"], $pokemon["imgSecundaria"], $pokemon["altura"], $pokemon["peso"], $pokemon["num-coleccion"], $pokemon["rareza"], $pokemon["ID_Region"], $pokemon["ID_Preevolucion"], $_POST['type'], $_POST['fullMove1'], $_POST['fullMove2']);
+        $_SESSION['error'] = errorMessage($e);
+    }
+}
+
+function setPokemonSessionData($nombre, $stage, $ilustrator, $hp, $descripcion, $categoria, $img, $img2, $altura, $peso, $numColeccion, $rareza, $idRegion, $idPre, $type, $fullMove1, $fullMove2) {
+    $pokemon = [
+        'nombre' => $nombre,
+        'etapa' => $stage,
+        'ilustrador' => $ilustrator,
+        'HP' => $hp,
+        'descripcion' => $descripcion,
+        'categoria' => $categoria,
+        'img' => $img,
+        'imgSecundaria' => $img2,
+        'altura' => $altura,
+        'peso' => $peso,
+        'num_coleccion' => $numColeccion,
+        'rareza' => $rareza,
+        'ID_Region' => $idRegion,
+        'ID_Preevolucion' => $idPre,
+    ];
+
+    $pokemonTypes = [
+        [
+            'id' => $type,
+        ],
+        [
+            'id' => '',
+        ]
+    ];
+
+    $pokemonMoves = [
+        [
+            'id' => $fullMove1,
+            'movimiento_nombre' => '',
+        ],
+        [
+            'id' => $fullMove2,
+            'movimiento_nombre' => '',
+        ]
     ];
 
     $_SESSION['pokemon'] = $pokemon;

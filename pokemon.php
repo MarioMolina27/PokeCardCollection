@@ -275,8 +275,17 @@ $pokemons = selectPokemon();
                     } 
                     else
                     {
+                       if(isset($_SESSION["buttonState"]))
+                       {
+                            $buttonName = $_SESSION["buttonState"];
+                       }
+                       else
+                       {
                         $buttonName = "default";
+                       }
                     }
+
+                    $_SESSION["buttonState"] = $buttonName;
                 ?>
                 <button type="submit" name="<?php echo $buttonName; ?>" class="myButton">SAVE</button>
         </div>

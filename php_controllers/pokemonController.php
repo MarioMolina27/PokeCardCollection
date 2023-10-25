@@ -26,7 +26,7 @@
             exit();
         }
     }
-    elseif(isset($_POST['pokemon_id_delete']))
+    else if(isset($_POST['pokemon_id_delete']))
     {
         deletePokemon($_POST['pokemon_id_delete']);
 

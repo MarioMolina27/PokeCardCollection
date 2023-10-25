@@ -66,7 +66,7 @@
             </div>
             <div class="col d-flex justify-content-center">
                 <form method="POST" action="./pokemon.php">
-                    <button type="submit" class="btn btn-danger btn-lg rounded-circle"><i class="fa-solid fa-plus"></i></button>
+                    <button type="submit" class="btn btn-danger btn-lg rounded-circle" name ="insert"><i class="fa-solid fa-plus"></i></button>
                 </form>
             </div>
 
