@@ -100,6 +100,7 @@ $pokemons = selectPokemon();
             $pokemon = unserialize($_POST['pokemon_data']);
             $pokemonTypes = unserialize($_POST['type_data']);
             $pokemonMoves = unserialize($_POST['moves_data']);
+            $_SESSION["idPokemon"] = $_POST["pokemon_id_edit"];
         }
 
         ?>

@@ -26,6 +26,22 @@
             exit();
         }
     }
+    else if (isset($_POST['edit']))
+    {
+        updatePokemon($_SESSION["idPokemon"],$_POST['name'], $_POST['stage'], $_POST['ilustrator'],$_POST['hp'],$_POST['description'],$_POST['category'],$_FILES["imgPokemon"]["name"],$_FILES['imgPokemon2']['name'],$_POST['height'],$_POST['weight'],$_POST['collector-num'],$_POST['rarity'],$_POST['region'],$_POST['preevolution']);
+        uploadAllFotos();
+
+        if(isset($_SESSION['error']))
+        {
+            header('Location: ../pokemon.php');
+            exit();
+        }
+        else
+        {
+            header('Location: ../index.php');
+            exit();
+        }
+    }
     else if(isset($_POST['pokemon_id_delete']))
     {
         deletePokemon($_POST['pokemon_id_delete']);

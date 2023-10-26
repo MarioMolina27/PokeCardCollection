@@ -1,7 +1,7 @@
 <?php 
 if (isset($_SESSION['mensaje'])) { ?>
 
-    <div class="alert alert-success alert-dismissible fade show" role="alert">
+    <div class="alert alert-success alert-dismissible fade show m-4" role="alert">
         <?php
         echo $_SESSION['mensaje'];
         unset($_SESSION['mensaje']);

@@ -508,7 +508,9 @@ function updatePokemon($id, $nombre, $stage, $ilustrator, $hp, $descripcion, $ca
             'ID_Preevolucion' => $idPre,
         ];
 
+        deleteTypePokemon($id,$pokemon);
         insertTypePokemon($_POST['type'], $id, $pokemon);
+        deleteMovesPokemon($id,$pokemon);
         insertMovesPokemon($_POST['fullMove1'], $id, $pokemon);
         insertMovesPokemon($_POST['fullMove2'], $id, $pokemon);
 
@@ -524,50 +526,44 @@ function updatePokemon($id, $nombre, $stage, $ilustrator, $hp, $descripcion, $ca
     $conexion = closeBd();
 }
 
-function updateTypePokemon($idPokemon, $idTipo, $pokemon) {
+function deleteTypePokemon($idPokemon,$pokemon) {
     try {
         $conexion = openBd();
 
-        $sentenciaText = "UPDATE Tipo_Pokemon 
-                         SET id_Tipo = :idTipo
-                         WHERE id_Pokemon = :idPokemon";
-        $sentencia = $conexion->prepare($sentenciaText);
+        $deleteStatement = "DELETE FROM Tipo_Pokemon WHERE id_Pokemon = :idPokemon";
+        $deleteQuery = $conexion->prepare($deleteStatement);
+        $deleteQuery->bindParam(':idPokemon', $idPokemon);
+        $deleteQuery->execute();
 
-        $sentencia->bindParam(':idTipo', $idTipo);
-        $sentencia->bindParam(':idPokemon', $idPokemon);
-
-        $sentencia->execute();
-
-        $_SESSION['success'] = "La relación Tipo_Pokemon se ha actualizado correctamente.";
+        $_SESSION['success'] = "La relación Tipo_Pokemon se ha eliminado correctamente.";
     } 
-    catch (PDOException $e) {
+    catch (PDOException $e) 
+    {
+        $_SESSION['error'] = errorMessage($e);
         $_SESSION['error'] = errorMessage($e);
         setPokemonSessionData($pokemon["nombre"], $pokemon["etapa"], $pokemon["ilustrador"], $pokemon["HP"], $pokemon["descripcion"], $pokemon["categoria"], $pokemon["img"], $pokemon["imgSecundaria"], $pokemon["altura"], $pokemon["peso"], $pokemon["num-coleccion"], $pokemon["rareza"], $pokemon["ID_Region"], $pokemon["ID_Preevolucion"], $_POST['type'], $_POST['fullMove1'], $_POST['fullMove2']);
     }
+    $conexion = closeBd();
 }
 
-function updateMovesPokemon($idMovimiento, $idPokemon, $pokemon) {
+
+function deleteMovesPokemon($idPokemon,$pokemon) {
     try {
         $conexion = openBd();
 
-        $sentenciaText = "UPDATE Movimiento_Pokemon 
-                         SET id_Movimiento = :idMovimiento
-                         WHERE id_Pokemon = :idPokemon";
-        $sentencia = $conexion->prepare($sentenciaText);
+        $deleteStatement = "DELETE FROM Movimiento_Pokemon WHERE id_Pokemon = :idPokemon";
+        $deleteQuery = $conexion->prepare($deleteStatement);
+        $deleteQuery->bindParam(':idPokemon', $idPokemon);
+        $deleteQuery->execute();
 
-        // Bind parameters
-        $sentencia->bindParam(':idMovimiento', $idMovimiento);
-        $sentencia->bindParam(':idPokemon', $idPokemon);
-
-        $sentencia->execute();
-
-        $_SESSION['success'] = "La relación Movimiento_Pokemon se ha actualizado correctamente.";
+        $_SESSION['success'] = "Los registros de Movimiento_Pokemon se han eliminado correctamente para el Pokemon con ID: $idPokemon.";
     } 
     catch (PDOException $e) 
     {
         setPokemonSessionData($pokemon["nombre"], $pokemon["etapa"], $pokemon["ilustrador"], $pokemon["HP"], $pokemon["descripcion"], $pokemon["categoria"], $pokemon["img"], $pokemon["imgSecundaria"], $pokemon["altura"], $pokemon["peso"], $pokemon["num-coleccion"], $pokemon["rareza"], $pokemon["ID_Region"], $pokemon["ID_Preevolucion"], $_POST['type'], $_POST['fullMove1'], $_POST['fullMove2']);
         $_SESSION['error'] = errorMessage($e);
     }
+    $conexion = closeBd();
 }
 
 function setPokemonSessionData($nombre, $stage, $ilustrator, $hp, $descripcion, $categoria, $img, $img2, $altura, $peso, $numColeccion, $rareza, $idRegion, $idPre, $type, $fullMove1, $fullMove2) {
