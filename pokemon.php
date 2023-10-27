@@ -103,11 +103,33 @@ $pokemons = selectPokemon();
             $_SESSION["idPokemon"] = $_POST["pokemon_id_edit"];
         }
 
+        if (isset($_POST['insert'])) 
+        {
+            $buttonName = "insert";
+        } 
+        else if (isset($_POST['edit'])) 
+        {
+            $buttonName = "edit";
+        } 
+        else
+        {
+           if(isset($_SESSION["buttonState"]))
+           {
+                $buttonName = $_SESSION["buttonState"];
+           }
+           else
+           {
+            $buttonName = "default";
+           }
+        }
+
+        $_SESSION["buttonState"] = $buttonName;
+
         ?>
         <div class="pokemonEditContainer">
             <img class="pokeball-image" src="./img/pokeball.svg" alt="">
-            <form id="myForm  w-75 p-5 d-flex align-items-center" action="php_controllers/pokemonController.php"
-                method="POST" enctype="multipart/form-data">
+            <form id="myForm" class =" myForm w-75 p-5 d-flex justify-content-center" action="php_controllers/pokemonController.php"
+                method="POST" enctype="multipart/form-data" name = "formPokemon">
                 <div class="row g-3 headerPokemon">
                     <div class="row">
                         <h2>Header</h2>
@@ -115,12 +137,12 @@ $pokemons = selectPokemon();
                     <div class="col-md-6">
                         <label for="name" class="form-label mb-0">Name</label>
                         <input type="text" class="form-control" id="name" name="name" placeholder="Name"
-                            value="<?php echo $pokemon["nombre"] ?>">
+                            value="<?php echo $pokemon["nombre"] ?>" required>
                     </div>
                     <div class="col-md-6">
                         <label for="type" class="form-label mb-0">Type</label>
-                        <select id="type" class="form-select" name="type">
-                            <option value="0">Selecciona un tipo</option>
+                        <select id="type" class="form-select" name="type" required>
+                            <option hidden value="">Selecciona un tipo</option>
                             <?php foreach ($types as $type) { ?>
                                 <option value="<?php echo $type['id']; ?>" <?php if ($type['id'] == $pokemonTypes[0]['id'])
                                        echo 'selected'; ?>>
@@ -131,8 +153,8 @@ $pokemons = selectPokemon();
                     </div>
                     <div class="col-12">
                         <label for="region" class="form-label mb-0">Region</label>
-                        <select class="form-select" aria-label="Default select example" name="region">
-                            <option hidden selected value="0">Select one region</option>
+                        <select class="form-select" aria-label="Default select example" name="region" required>
+                            <option hidden value="">Select one region</option>
                             <?php foreach ($regions as $region) { ?>
                                 <option value="<?php echo $region['id']; ?>" <?php if ($region['id'] == $pokemon["ID_Region"])
                                        echo 'selected'; ?>>
@@ -144,12 +166,12 @@ $pokemons = selectPokemon();
                     <div class="col-6">
                         <label for="hp" class="form-label mb-0">HP</label>
                         <input type="number" class="form-control" id="hp" placeholder="ex.90" name="hp"
-                            value="<?php echo $pokemon["HP"] ?>">
+                            value="<?php echo $pokemon["HP"] ?>" required>
                     </div>
                     <div class="col-6">
                         <label for="stage" class="form-label mb-0">Stage</label>
-                        <select id="stage" class="form-select" name="stage">
-                            <option hidden selected value="Basic">Select the stage</option>
+                        <select id="stage" class="form-select" name="stage" required>
+                            <option hidden value="Basic">Select the stage</option>
                             <option value="Basic" <?php if ($pokemon['etapa'] == "Basic")
                                 echo 'selected'; ?>>BASIC</option>
                             <option value="Stage 1" <?php if ($pokemon['etapa'] == "Stage 1")
@@ -160,7 +182,7 @@ $pokemons = selectPokemon();
                     </div>
                     <div class="col-6" id="preevolution-input">
                         <label for="preevolution" class="form-label mb-0">Preevolution</label>
-                        <select id="preevolution" class="form-select" name="preevolution">
+                        <select id="preevolution" class="form-select" name="preevolution" required>
                             <option hidden selected value="null">Select the preevolution</option>
                             <?php foreach ($pokemons as $pokemonPre) { ?>
                                 <option value="<?php echo $pokemonPre['id']; ?>" <?php if ($pokemonPre['id'] == $pokemon['ID_Preevolucion'])
@@ -177,26 +199,46 @@ $pokemons = selectPokemon();
                     </div>
                     <div class="col-12">
                         <label for="imgPokemon" class="form-label mb-0">Image</label>
-                        <input class="form-control" type="file" id="imgPokemon" name="imgPokemon" required>
+                        <input class="form-control" type="file" id="imgPokemon" name="imgPokemon" <?php echo ($_SESSION["buttonState"] === 'insert') ? 'required' : ''; ?>>
+                    </div>
+                    <div class="col-12 d-flex justify-content-center">
+                        <?php 
+                            $imgRoute ="./img/no-image.png";
+                            if (isset($_POST['edit'])) 
+                            {
+                                $imgRoute = "./img/pokemon/" .$pokemon['img'];
+                            } 
+                        ?>
+                        <img src="<?php echo $imgRoute ?>" alt="Principal Pokemon Image" class="image-pokemon-form" id="img1Preview">
                     </div>
                     <div class="col-12">
                         <label for="imgPokemon2" class="form-label mb-0">Secondary Image</label>
-                        <input class="form-control" type="file" id="imgPokemon2" name="imgPokemon2" required>
+                        <input class="form-control" type="file" id="imgPokemon2" name="imgPokemon2" <?php echo ($_SESSION["buttonState"] === 'insert') ? 'required' : ''; ?>>
+                    </div>
+                    <div class="col-12 d-flex justify-content-center">
+                        <?php 
+                            $imgRoute ="./img/no-image.png";
+                            if (isset($_POST['edit'])) 
+                            {
+                                $imgRoute = "./img/pokemon/" .$pokemon['imgSecundaria'];
+                            } 
+                        ?>
+                        <img src="<?php echo $imgRoute ?>" alt="Principal Pokemon Image" class="image-pokemon-form" id="img2Preview">
                     </div>
                     <div class="col-md-6">
                         <label for="category" class="form-label mb-0">Category</label>
                         <input class="form-control" type="text" id="category" placeholder="ex.Penguin Pokemon"
-                            name="category" value="<?php echo $pokemon["categoria"] ?>">
+                            name="category" value="<?php echo $pokemon["categoria"] ?> "required>
                     </div>
                     <div class="col-md-6">
                         <label for="height" class="form-label mb-0">Height</label>
                         <input class="form-control" type="number" id="height" name="height"
-                            value="<?php echo $pokemon["altura"] ?>">
+                            value="<?php echo $pokemon["altura"] ?>" required>
                     </div>
                     <div class="col-md-6">
                         <label for="weight" class="form-label mb-0">Weight</label>
                         <input class="form-control" type="number" id="weight" name="weight"
-                            value="<?php echo $pokemon["peso"] ?>">
+                            value="<?php echo $pokemon["peso"] ?>" required>
                     </div>
                 </div>
                 <div class="row g-3 movesPokemon">
@@ -206,8 +248,8 @@ $pokemons = selectPokemon();
                     <div class="row g-3 move1">
                         <div class="col-12">
                             <label for="fullMove1" class="form-label mb-0">Move 1</label>
-                            <select id="fullMove1" class="form-select" name="fullMove1">
-                                <option hidden value="0">Select one move</option>
+                            <select id="fullMove1" class="form-select" name="fullMove1" required>
+                                <option hidden value="">Select one move</option>
                                 <?php foreach ($moves as $move) { ?>
                                     <option value="<?php echo $move['id']; ?>" <?php if ($move['id'] == $pokemonMoves[0]["id"]) echo 'selected'; ?>>
                                         <?php echo $move['nombre']; ?>
@@ -219,8 +261,8 @@ $pokemons = selectPokemon();
                     <div class="row g-3 move2">
                         <div class="col-12">
                             <label for="fullMove2" class="form-label mb-0">Move 2</label>
-                            <select id="fullMove2" class="form-select" name="fullMove2">
-                                <option hidden value="0">Select one move</option>
+                            <select id="fullMove2" class="form-select" name="fullMove2" required>
+                                <option hidden value="">Select one move</option>
                                 <?php foreach ($moves as $move) { ?>
                                     <option value="<?php echo $move['id']; ?>" <?php if ($move['id'] == $pokemonMoves[1]["id"]) echo 'selected'; ?>>
                                         <?php echo $move['nombre']; ?>
@@ -238,16 +280,16 @@ $pokemons = selectPokemon();
                     <div class="col-md-6">
                         <label for="ilustrator" class="form-label mb-0">Ilustrator</label>
                         <input type="text" class="form-control" id="ilustrator" placeholder="Ilustrator"
-                            name="ilustrator" value="<?php echo $pokemon["ilustrador"] ?>">
+                            name="ilustrator" value="<?php echo $pokemon["ilustrador"] ?>" required>
                     </div>
                     <div class="col-md-6">
                         <label for="description" class="form-label mb-0">Description</label>
                         <input type="text" class="form-control" id="description" placeholder="Description"
-                            name="description" value="<?php echo $pokemon["descripcion"] ?>">
+                            name="description" value="<?php echo $pokemon["descripcion"] ?>" required>
                     </div>
                     <div class="col-md-6">
                         <label for="rarity" class="form-label mb-0">Rarity</label>
-                        <select id="rarity" class="form-select" name="rarity">
+                        <select id="rarity" class="form-select" name="rarity" required>
                             <option hidden value="">Choose the rarity</option>
                             <option value="Common" <?php if ($pokemon["rareza"] === 'Common')
                                 echo 'selected'; ?>>Common
@@ -262,32 +304,9 @@ $pokemons = selectPokemon();
                     <div class="col-md-6">
                         <label for="collector-num" class="form-label mb-0">Colector number</label>
                         <input type="number" class="form-control" id="collector-num" placeholder="Number"
-                            name="collector-num" value="<?php echo $pokemon["num_coleccion"] ?>">
+                            name="collector-num" value="<?php echo $pokemon["num_coleccion"] ?>" required>
                     </div>
                 </div>
-                <?php 
-                    if (isset($_POST['insert'])) 
-                    {
-                        $buttonName = "insert";
-                    } 
-                    else if (isset($_POST['edit'])) 
-                    {
-                        $buttonName = "edit";
-                    } 
-                    else
-                    {
-                       if(isset($_SESSION["buttonState"]))
-                       {
-                            $buttonName = $_SESSION["buttonState"];
-                       }
-                       else
-                       {
-                        $buttonName = "default";
-                       }
-                    }
-
-                    $_SESSION["buttonState"] = $buttonName;
-                ?>
                 <button type="submit" name="<?php echo $buttonName; ?>" class="myButton">SAVE</button>
         </div>
         </form>
@@ -306,7 +325,7 @@ $pokemons = selectPokemon();
         <p class="footer-copyright">&copy; 2023 mmolinab - Mario Molina</p>
     </footer>
     <script src="./js/shakePokeball.js"></script>
-    <script src="./js/stage.js"></script>
+    <script src="./js/formValidation.js"></script>
 </body>
 
 </html>

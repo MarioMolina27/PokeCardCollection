@@ -47,7 +47,7 @@ h1
     margin: 10px;
 }
 
-.form-control:valid , .form-select:valid{
+.form-control , .form-select{
     -webkit-box-shadow: 10px 10px 5px -8px rgba(0,0,0,0.75);
 -moz-box-shadow: 10px 10px 5px -8px rgba(0,0,0,0.75);
 box-shadow: 10px 10px 5px -8px rgba(0,0,0,0.75);

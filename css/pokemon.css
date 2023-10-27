@@ -64,14 +64,13 @@ h2
     display: flex;
     flex-direction: column;
     justify-content: center;
+    align-self: center;
 }
 
 .pokemonEditContainer
 {
     margin-top: 110px;
     margin-bottom: 80px;
-    padding-right: 120px;
-    padding-left:120px;
 }
 
 .pokeball-image {
@@ -86,6 +85,11 @@ h2
 {
     animation-name: shake;
     animation-duration: 4s;
+}
+
+.image-pokemon-form
+{
+    height: 80px;
 }
 
 main
@@ -131,8 +135,6 @@ main
     {
         margin-top: 110px;
         margin-bottom: 80px;
-        padding-right: 30px;
-        padding-left:30px;
     }
 
   }
