@@ -209,6 +209,7 @@ $pokemons = selectPokemon();
                                 $imgRoute = "./img/pokemon/" .$pokemon['img'];
                             } 
                         ?>
+                        <input type="hidden" name="imgPrincipal" value="<?php echo $pokemon['img'] ?>">
                         <img src="<?php echo $imgRoute ?>" alt="Principal Pokemon Image" class="image-pokemon-form" id="img1Preview">
                     </div>
                     <div class="col-12">
@@ -223,6 +224,7 @@ $pokemons = selectPokemon();
                                 $imgRoute = "./img/pokemon/" .$pokemon['imgSecundaria'];
                             } 
                         ?>
+                        <input type="hidden" name="imgSecondary" value="<?php echo $pokemon['imgSecundaria'] ?>">
                         <img src="<?php echo $imgRoute ?>" alt="Principal Pokemon Image" class="image-pokemon-form" id="img2Preview">
                     </div>
                     <div class="col-md-6">
