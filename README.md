@@ -13,7 +13,7 @@ Antes de comenzar, asegúrate de tener instalado lo siguiente:
 ## Configuración de la Base de Datos
 
 1. Crea una base de datos MySQL en tu servidor local utilizando la herramienta de gestión de base de datos que prefieras (por ejemplo, phpMyAdmin).
-2. Ejecuta el script SQL proporcionado en el archivo `database.sql` en tu base de datos recién creada. Este script creará la tabla necesaria para la aplicación.
+2. Ejecuta el script SQL proporcionado en el archivo `pokemon.sql` en tu base de datos recién creada. Este script creará la tabla necesaria para la aplicación.
 
 ## Configuración de la Aplicación
 
