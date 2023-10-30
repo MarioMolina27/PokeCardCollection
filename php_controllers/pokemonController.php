@@ -50,8 +50,6 @@
             if(!isset($_SESSION["error"]))
             {
                 updatePokemon($_SESSION["idPokemon"], $_POST['name'], $_POST['stage'], $_POST['ilustrator'], $_POST['hp'], $_POST['description'], $_POST['category'], $_FILES["imgPokemon"]["name"], $_POST['imgSecondary'], $_POST['height'], $_POST['weight'], $_POST['collector-num'], $_POST['rarity'], $_POST['region'], $_POST['preevolution']);
-                unset($_SESSION['previewImage1']);
-                unset($_SESSION['previewImage2']);
             }
             else
             {
@@ -67,8 +65,6 @@
             if(!isset($_SESSION["error"]))
             {
                 updatePokemon($_SESSION["idPokemon"], $_POST['name'], $_POST['stage'], $_POST['ilustrator'], $_POST['hp'], $_POST['description'], $_POST['category'], $_POST['imgPrincipal'], $_FILES['imgPokemon2']['name'], $_POST['height'], $_POST['weight'], $_POST['collector-num'], $_POST['rarity'], $_POST['region'], $_POST['preevolution']);
-                unset($_SESSION['previewImage1']);
-                unset($_SESSION['previewImage2']);
             }
             else
             {
@@ -79,8 +75,6 @@
         else 
         {
             updatePokemon($_SESSION["idPokemon"], $_POST['name'], $_POST['stage'], $_POST['ilustrator'], $_POST['hp'], $_POST['description'], $_POST['category'], $_POST['imgPrincipal'], $_POST['imgSecondary'], $_POST['height'], $_POST['weight'], $_POST['collector-num'], $_POST['rarity'], $_POST['region'], $_POST['preevolution']);
-            unset($_SESSION['previewImage1']);
-            unset($_SESSION['previewImage2']);
         }
 
         if(isset($_SESSION['error']))

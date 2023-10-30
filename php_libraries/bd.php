@@ -530,6 +530,9 @@ function updatePokemon($id, $nombre, $stage, $ilustrator, $hp, $descripcion, $ca
         insertMovesPokemon($_POST['fullMove1'], $id, $pokemon);
         insertMovesPokemon($_POST['fullMove2'], $id, $pokemon);
 
+        unset($_SESSION['previewImage1']);
+        unset($_SESSION['previewImage2']);
+
     } 
     catch (PDOException $e) 
     {
