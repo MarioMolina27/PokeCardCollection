@@ -1,3 +1,18 @@
+@font-face 
+{
+    font-family: 'Futura-Medium'; 
+    src: url('../font/futura medium bt.ttf'); 
+}
+body 
+{
+    font-family: 'Futura';
+    margin: 0px;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    background-image: url("../img/background_light.jpeg");
+    justify-content: center;
+}
 main
 {
     display: flex;

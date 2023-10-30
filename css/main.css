@@ -12,18 +12,6 @@
 }
 /************************************************* BODY AND MAIN CONTAINERS **********************************************************/
 
-body 
-{
-    font-family: 'Futura';
-    margin: 0px;
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    background-image: url("../img/background_light.jpeg");
-    justify-content: center;
-   
-}
-
 .fadeIn {
     animation: fadeInAnimation 1s ease-in-out;
 }

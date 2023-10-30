@@ -1,0 +1,10 @@
+@font-face 
+{
+    font-family: 'Futura-Medium'; 
+    src: url('../font/futura medium bt.ttf'); 
+}
+
+td
+{
+    font-family: 'Futura-Medium';
+}

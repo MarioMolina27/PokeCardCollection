@@ -50,12 +50,28 @@
 </head>
 
 <body>
-    <header>
-        <h1>POKEMON CARD COLLECTION</h1>
-    </header>
+    
+    <nav class="navbar navbar-expand-lg bg-light sticky-top">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">
+            <img class="pokeball-logo" src="./img/pokeball.svg" alt="Logo" style="height: 50px; margin-right: 10px;">PokeCardCollector</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse d-flex justify-content-end"  id="navbarSupportedContent">
+                <ul class="navbar-nav mr-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="#">Home</a>
+                    </li>
+                    <li class="nav-item">
+                    <a class="nav-link" href="./moves.php">Moves</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    
     <main>
-
-
     <div class="container-fluid mt-5 mb-5 d-flex justify-content-center">
         <div class="row d-flex align-items-center w-100">
             <div class="col d-flex">

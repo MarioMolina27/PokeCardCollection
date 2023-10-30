@@ -224,6 +224,22 @@ function selectTypes()
     return $resultado;
 }
 
+function selectTypesByID($id)
+{
+    $conexion = openBd();
+
+    $sentenciaText = "select nombre from Tipo where id = :id";
+    $sentencia = $conexion->prepare($sentenciaText);
+    $sentencia->bindParam(':id', $id);
+    $sentencia->execute();
+
+    $resultado = $sentencia->fetchColumn();
+
+    $conexion = closeBd();
+
+    return $resultado;
+}
+
 function selectLastPokemonID()
 {
     $conexion = openBd();
