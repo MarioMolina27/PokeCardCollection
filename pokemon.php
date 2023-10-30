@@ -134,7 +134,9 @@ $pokemons = selectPokemon();
         $_SESSION["buttonState"] = $buttonName;
 
         ?>
+        
         <div class="pokemonEditContainer">
+        <a href="./index.php" class="back-button"><i class="fa-solid fa-arrow-left fa-xl"></i></a>
             <img class="pokeball-image" src="./img/pokeball.svg" alt="">
             <form id="myForm" class =" myForm w-75 p-5 d-flex justify-content-center" action="php_controllers/pokemonController.php"
                 method="POST" enctype="multipart/form-data" name = "formPokemon">
