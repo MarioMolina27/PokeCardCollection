@@ -33,67 +33,7 @@ $pokemons = selectPokemon();
         <?php
         require_once('php_partials/mensajes.php');
 
-        if (isset($_SESSION['pokemon'])) {
-            $pokemon = $_SESSION['pokemon'];
-            unset($_SESSION['pokemon']);
-        } 
-
-        else
-        {
-            $pokemon = [
-                'nombre' => '',
-                'etapa' => '',
-                'ilustrador' => '',
-                'HP' => '',
-                'descripcion' => '',
-                'categoria' => '',
-                'img' => '',
-                'imgSecundaria' => '',
-                'altura' => '',
-                'peso' => '',
-                'num_coleccion' => '',
-                'rareza' => '',
-                'ID_Region' => '',
-                'ID_Preevolucion' => '',
-            ];
-        }
-
-        if (isset($_SESSION['pokemonTypes'])) 
-        {
-            $pokemonTypes = $_SESSION['pokemonTypes'];
-            unset($_SESSION['pokemonTypes']);
-        } 
-        else 
-        {
-            $pokemonTypes =
-                [
-                    [
-                        'id'=> '',
-                    ],
-                    [
-                        'id'=> '',
-                    ]
-                ];
-        }
         
-        if (isset($_SESSION['pokemonMoves'])) 
-        {
-            $pokemonMoves= $_SESSION['pokemonMoves'];
-            unset($_SESSION['pokemonMoves']);
-        } 
-        else 
-        {
-            $pokemonMoves = [
-                [
-                    'id'=> '',
-                    'movimiento_nombre' => '',
-                ],
-                [
-                    'id'=> '',
-                    'movimiento_nombre' => '',
-                ]
-            ];
-        }
 
         if(isset($_POST['edit']))
         {
@@ -106,6 +46,68 @@ $pokemons = selectPokemon();
         if (isset($_POST['insert'])) 
         {
             $buttonName = "insert";
+
+            if (isset($_SESSION['pokemon'])) {
+                $pokemon = $_SESSION['pokemon'];
+                unset($_SESSION['pokemon']);
+            } 
+    
+            else
+            {
+                $pokemon = [
+                    'nombre' => '',
+                    'etapa' => '',
+                    'ilustrador' => '',
+                    'HP' => '',
+                    'descripcion' => '',
+                    'categoria' => '',
+                    'img' => '',
+                    'imgSecundaria' => '',
+                    'altura' => '',
+                    'peso' => '',
+                    'num_coleccion' => '',
+                    'rareza' => '',
+                    'ID_Region' => '',
+                    'ID_Preevolucion' => '',
+                ];
+            }
+    
+            if (isset($_SESSION['pokemonTypes'])) 
+            {
+                $pokemonTypes = $_SESSION['pokemonTypes'];
+                unset($_SESSION['pokemonTypes']);
+            } 
+            else 
+            {
+                $pokemonTypes =
+                    [
+                        [
+                            'id'=> '',
+                        ],
+                        [
+                            'id'=> '',
+                        ]
+                    ];
+            }
+            
+            if (isset($_SESSION['pokemonMoves'])) 
+            {
+                $pokemonMoves= $_SESSION['pokemonMoves'];
+                unset($_SESSION['pokemonMoves']);
+            } 
+            else 
+            {
+                $pokemonMoves = [
+                    [
+                        'id'=> '',
+                        'movimiento_nombre' => '',
+                    ],
+                    [
+                        'id'=> '',
+                        'movimiento_nombre' => '',
+                    ]
+                ];
+            }
         } 
         else if (isset($_POST['edit'])) 
         {
@@ -116,6 +118,12 @@ $pokemons = selectPokemon();
            if(isset($_SESSION["buttonState"]))
            {
                 $buttonName = $_SESSION["buttonState"];
+                $pokemon = $_SESSION['pokemon'];
+                unset($_SESSION['pokemon']);
+                $pokemonTypes = $_SESSION['pokemonTypes'];
+                unset($_SESSION['pokemonTypes']);
+                $pokemonMoves= $_SESSION['pokemonMoves'];
+                unset($_SESSION['pokemonMoves']);
            }
            else
            {
@@ -204,12 +212,23 @@ $pokemons = selectPokemon();
                     <div class="col-12 d-flex justify-content-center">
                         <?php 
                             $imgRoute ="./img/no-image.png";
-                            if (isset($_POST['edit'])) 
+                            $imageHidden = "";
+                            if (isset($_POST['edit'])|| isset($_SESSION["previewImage1"])) 
                             {
-                                $imgRoute = "./img/pokemon/" .$pokemon['img'];
+                                if (isset($_SESSION["previewImage1"]))
+                                {
+                                    $imgRoute = "./img/pokemon/" .$_SESSION["previewImage1"];
+                                    $imageHidden = $_SESSION["previewImage1"];
+                                }
+                                else
+                                {
+                                    $imgRoute = "./img/pokemon/" .$pokemon['img'];
+                                    $imageHidden = $pokemon['img'];
+                                }
+                                
                             } 
                         ?>
-                        <input type="hidden" name="imgPrincipal" value="<?php echo $pokemon['img'] ?>">
+                        <input type="hidden" name="imgPrincipal" value="<?php echo $imageHidden ?>">
                         <img src="<?php echo $imgRoute ?>" alt="Principal Pokemon Image" class="image-pokemon-form" id="img1Preview">
                     </div>
                     <div class="col-12">
@@ -219,12 +238,23 @@ $pokemons = selectPokemon();
                     <div class="col-12 d-flex justify-content-center">
                         <?php 
                             $imgRoute ="./img/no-image.png";
-                            if (isset($_POST['edit'])) 
+                            $imageHidden = "";
+                            if (isset($_POST['edit'])|| isset($_SESSION["previewImage2"]))
                             {
-                                $imgRoute = "./img/pokemon/" .$pokemon['imgSecundaria'];
+                                if (isset($_SESSION["previewImage2"]))
+                                {
+                                    $imgRoute = "./img/pokemon/" .$_SESSION["previewImage2"];
+                                    $imageHidden = $_SESSION["previewImage2"];
+                                }
+                                else
+                                {
+                                    $imgRoute = "./img/pokemon/" .$pokemon['imgSecundaria'];
+                                    $imageHidden = $pokemon['imgSecundaria'];
+
+                                }
                             } 
                         ?>
-                        <input type="hidden" name="imgSecondary" value="<?php echo $pokemon['imgSecundaria'] ?>">
+                        <input type="hidden" name="imgSecondary" value="<?php echo $imageHidden ?>">
                         <img src="<?php echo $imgRoute ?>" alt="Principal Pokemon Image" class="image-pokemon-form" id="img2Preview">
                     </div>
                     <div class="col-md-6">

@@ -31,18 +31,44 @@
         
         if (!empty($_FILES['imgPokemon']['tmp_name']) && !empty($_FILES['imgPokemon2']['tmp_name'])) 
         {
-            updatePokemon($_SESSION["idPokemon"], $_POST['name'], $_POST['stage'], $_POST['ilustrator'], $_POST['hp'], $_POST['description'], $_POST['category'], $_FILES["imgPokemon"]["name"], $_FILES['imgPokemon2']['name'], $_POST['height'], $_POST['weight'], $_POST['collector-num'], $_POST['rarity'], $_POST['region'], $_POST['preevolution']);
             uploadAllFotos();
+            if(!isset($_SESSION["error"]))
+            {
+                updatePokemon($_SESSION["idPokemon"], $_POST['name'], $_POST['stage'], $_POST['ilustrator'], $_POST['hp'], $_POST['description'], $_POST['category'], $_FILES["imgPokemon"]["name"], $_FILES['imgPokemon2']['name'], $_POST['height'], $_POST['weight'], $_POST['collector-num'], $_POST['rarity'], $_POST['region'], $_POST['preevolution']);
+            }
+            else
+            {
+                assignSessionImagePreview();
+                setPokemonSessionData($_POST['name'], $_POST['stage'], $_POST['ilustrator'],$_POST['hp'],$_POST['description'],$_POST['category'],$_FILES["imgPokemon"]["name"],$_FILES['imgPokemon2']['name'],$_POST['height'],$_POST['weight'],$_POST['collector-num'],$_POST['rarity'],$_POST['region'],$_POST['preevolution'], $_POST['type'], $_POST['fullMove1'], $_POST['fullMove2']);
+            }
         } 
-        elseif (!empty($_FILES['imgPokemon']['tmp_name']) && empty($_FILES['imgPokemon2']['tmp_name'])) 
+        else if (!empty($_FILES['imgPokemon']['tmp_name']) && empty($_FILES['imgPokemon2']['tmp_name'])) 
         {
-            updatePokemon($_SESSION["idPokemon"], $_POST['name'], $_POST['stage'], $_POST['ilustrator'], $_POST['hp'], $_POST['description'], $_POST['category'], $_FILES["imgPokemon"]["name"], $_POST['imgSecondary'], $_POST['height'], $_POST['weight'], $_POST['collector-num'], $_POST['rarity'], $_POST['region'], $_POST['preevolution']);
             uploadImage("imgPokemon");
+            if(!isset($_SESSION["error"]))
+            {
+                updatePokemon($_SESSION["idPokemon"], $_POST['name'], $_POST['stage'], $_POST['ilustrator'], $_POST['hp'], $_POST['description'], $_POST['category'], $_FILES["imgPokemon"]["name"], $_POST['imgSecondary'], $_POST['height'], $_POST['weight'], $_POST['collector-num'], $_POST['rarity'], $_POST['region'], $_POST['preevolution']);
+            }
+            else
+            {
+                assignSessionImagePreview();
+                setPokemonSessionData($_POST['name'], $_POST['stage'], $_POST['ilustrator'],$_POST['hp'],$_POST['description'],$_POST['category'],$_FILES["imgPokemon"]["name"],$_FILES['imgPokemon2']['name'],$_POST['height'],$_POST['weight'],$_POST['collector-num'],$_POST['rarity'],$_POST['region'],$_POST['preevolution'], $_POST['type'], $_POST['fullMove1'], $_POST['fullMove2']);
+
+            }
+
         } 
-        elseif (empty($_FILES['imgPokemon']['tmp_name']) && !empty($_FILES['imgPokemon2']['tmp_name'])) 
+        else if (empty($_FILES['imgPokemon']['tmp_name']) && !empty($_FILES['imgPokemon2']['tmp_name'])) 
         {
-            updatePokemon($_SESSION["idPokemon"], $_POST['name'], $_POST['stage'], $_POST['ilustrator'], $_POST['hp'], $_POST['description'], $_POST['category'], $_POST['imgPrincipal'], $_FILES['imgPokemon2']['name'], $_POST['height'], $_POST['weight'], $_POST['collector-num'], $_POST['rarity'], $_POST['region'], $_POST['preevolution']);
             uploadImage("imgPokemon2");
+            if(!isset($_SESSION["error"]))
+            {
+                updatePokemon($_SESSION["idPokemon"], $_POST['name'], $_POST['stage'], $_POST['ilustrator'], $_POST['hp'], $_POST['description'], $_POST['category'], $_POST['imgPrincipal'], $_FILES['imgPokemon2']['name'], $_POST['height'], $_POST['weight'], $_POST['collector-num'], $_POST['rarity'], $_POST['region'], $_POST['preevolution']);
+            }
+            else
+            {
+                assignSessionImagePreview();
+                setPokemonSessionData($_POST['name'], $_POST['stage'], $_POST['ilustrator'],$_POST['hp'],$_POST['description'],$_POST['category'],$_FILES["imgPokemon"]["name"],$_FILES['imgPokemon2']['name'],$_POST['height'],$_POST['weight'],$_POST['collector-num'],$_POST['rarity'],$_POST['region'],$_POST['preevolution'], $_POST['type'], $_POST['fullMove1'], $_POST['fullMove2']);
+            }
         } 
         else 
         {
@@ -79,5 +105,18 @@
     {
         header('Location: ../index.php');
         exit();
+    }
+
+    function assignSessionImagePreview()
+    {
+        if (isset($_POST['imgPrincipal']) && preg_match('/\.(jpg|jpeg|png|gif)$/i', $_POST['imgPrincipal'])) 
+        {
+            $_SESSION["previewImage1"] = $_POST['imgPrincipal'];
+        }
+        
+        if (isset($_POST['imgSecondary']) && preg_match('/\.(jpg|jpeg|png|gif)$/i', $_POST['imgSecondary'])) 
+        {
+            $_SESSION["previewImage2"] = $_POST['imgSecondary'];
+        }
     }
 ?>
