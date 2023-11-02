@@ -240,23 +240,6 @@ function selectTypesByID($id)
     return $resultado;
 }
 
-function selectLastPokemonID()
-{
-    $conexion = openBd();
-
-    $sentenciaText = "SELECT MAX(id) AS id FROM Pokemon";
-    $sentencia = $conexion->prepare($sentenciaText);
-    $sentencia->execute();
-
-    $resultado = $sentencia->fetch();
-
-    $conexion = closeBd();
-
-    $idPokemon = $resultado['id'];
-
-    return $idPokemon;
-}
-
 function selectMoves()
 {
     $conexion = openBd();
@@ -277,6 +260,8 @@ function insertPokemon($nombre, $stage, $ilustrator, $hp, $descripcion, $categor
 {
     try {
         $conexion = openBd();
+        $conexion->beginTransaction();
+        
         $sentenciaText = "INSERT INTO Pokemon (nombre, etapa, ilustrador, HP, descripcion, categoria, img, imgSecundaria, altura, peso, num_coleccion, rareza, ID_Region, ID_Preevolucion)
         VALUES (:nombre, :stage, :ilustrator, :hp, :descripcion, :categoria, :img, :img2, :altura, :peso, :numColeccion, :rareza, :idRegion, :idPre);";
         $sentencia = $conexion->prepare($sentenciaText);
@@ -319,27 +304,39 @@ function insertPokemon($nombre, $stage, $ilustrator, $hp, $descripcion, $categor
             'ID_Preevolucion' => $idPre,
         ];
 
-        $idPokemon = selectLastPokemonID();
-        insertTypePokemon($_POST['type'], $idPokemon, $pokemon);
-        insertMovesPokemon($_POST['fullMove1'], $idPokemon, $pokemon);
-        insertMovesPokemon($_POST['fullMove2'], $idPokemon, $pokemon);
+        $idPokemon = $conexion->lastInsertId();
+
+        if(!isset($_SESSION['error']))
+        {
+            insertTypePokemon($_POST['type'], $idPokemon, $pokemon, $conexion);
+        }
+
+        if(!isset($_SESSION['error']))
+        {
+            insertMovesPokemon($_POST['fullMove1'], $idPokemon, $pokemon, $conexion);
+        }
+        
+        if(!isset($_SESSION['error']))
+        {
+            insertMovesPokemon($_POST['fullMove2'], $idPokemon, $pokemon, $conexion);
+        }
+       
+        $conexion->commit();
 
     } 
     catch (PDOException $e) {
         $_SESSION['error'] = errorMessage($e);
-
+        $conexion->rollback();
         setPokemonSessionData($nombre, $stage, $ilustrator, $hp, $descripcion, $categoria, $img, $img2, $altura, $peso, $numColeccion, $rareza, $idRegion, $idPre, $_POST['type'], $_POST['fullMove1'], $_POST['fullMove2']);
     }
 
     $conexion = closeBd();
 }
 
-function insertTypePokemon($idTipo, $idPokemon, $pokemon)
+function insertTypePokemon($idTipo, $idPokemon, $pokemon,$conexion)
 {
     try {
-        $conexion = openBd();
-
-
+        
         $sentenciaText = "INSERT INTO Tipo_Pokemon (id_Pokemon, id_Tipo) 
         VALUES (:idPokemon, :idTipo)";
 
@@ -355,18 +352,15 @@ function insertTypePokemon($idTipo, $idPokemon, $pokemon)
     } 
     catch (PDOException $e) 
     {
+        $conexion->rollback();
         setPokemonSessionData($pokemon["nombre"], $pokemon["etapa"], $pokemon["ilustrador"], $pokemon["HP"], $pokemon["descripcion"], $pokemon["categoria"], $pokemon["img"], $pokemon["imgSecundaria"], $pokemon["altura"], $pokemon["peso"], $pokemon["num-coleccion"], $pokemon["rareza"], $pokemon["ID_Region"], $pokemon["ID_Preevolucion"], $_POST['type'], $_POST['fullMove1'], $_POST['fullMove2']);
-
         $_SESSION['error'] = errorMessage($e);
     }
 }
 
-function insertMovesPokemon($idMovimento, $idPokemon, $pokemon)
+function insertMovesPokemon($idMovimento, $idPokemon, $pokemon,$conexion)
 {
     try {
-        $conexion = openBd();
-
-
         $sentenciaText = "INSERT INTO Movimiento_Pokemon (id_Pokemon, id_Movimiento) 
         VALUES (:idPokemon, :idMovimiento)";
 
@@ -381,9 +375,9 @@ function insertMovesPokemon($idMovimento, $idPokemon, $pokemon)
         $_SESSION['success'] = "La relación Tipo_Pokemon se ha insertado correctamente.";
     } 
     catch (PDOException $e) {
+        $conexion->rollback();
         $_SESSION['error'] = errorMessage($e);
         setPokemonSessionData($pokemon["nombre"], $pokemon["etapa"], $pokemon["ilustrador"], $pokemon["HP"], $pokemon["descripcion"], $pokemon["categoria"], $pokemon["img"], $pokemon["imgSecundaria"], $pokemon["altura"], $pokemon["peso"], $pokemon["num-coleccion"], $pokemon["rareza"], $pokemon["ID_Region"], $pokemon["ID_Preevolucion"], $_POST['type'], $_POST['fullMove1'], $_POST['fullMove2']);
-        
     }
 }
 
@@ -466,6 +460,8 @@ function errorUploadFotoSession()
 function updatePokemon($id, $nombre, $stage, $ilustrator, $hp, $descripcion, $categoria, $img, $img2, $altura, $peso, $numColeccion, $rareza, $idRegion, $idPre) {
     try {
         $conexion = openBd();
+        $conexion->beginTransaction();
+
         $sentenciaText = "UPDATE Pokemon 
                          SET nombre = :nombre, 
                              etapa = :stage, 
@@ -524,30 +520,44 @@ function updatePokemon($id, $nombre, $stage, $ilustrator, $hp, $descripcion, $ca
             'ID_Preevolucion' => $idPre,
         ];
 
-        deleteTypePokemon($id,$pokemon);
-        insertTypePokemon($_POST['type'], $id, $pokemon);
-        deleteMovesPokemon($id,$pokemon);
-        insertMovesPokemon($_POST['fullMove1'], $id, $pokemon);
-        insertMovesPokemon($_POST['fullMove2'], $id, $pokemon);
+        if (!isset($_SESSION['error'])) {
+            deleteTypePokemon($id, $pokemon,$conexion);
+        }
+        
+        if (!isset($_SESSION['error'])) {
+            insertTypePokemon($_POST['type'], $id, $pokemon, $conexion);
+        }
+        
+        if (!isset($_SESSION['error'])) {
+            deleteMovesPokemon($id, $pokemon,$conexion);
+        }
+        
+        if (!isset($_SESSION['error'])) {
+            insertMovesPokemon($_POST['fullMove1'], $id, $pokemon, $conexion);
+        }
+        
+        if (!isset($_SESSION['error'])) {
+            insertMovesPokemon($_POST['fullMove2'], $id, $pokemon, $conexion);
+        }
 
         unset($_SESSION['previewImage1']);
         unset($_SESSION['previewImage2']);
+
+        $conexion->commit();
 
     } 
     catch (PDOException $e) 
     {
         $_SESSION['error'] = errorMessage($e);
-
+        $conexion->rollback();
         setPokemonSessionData($nombre, $stage, $ilustrator, $hp, $descripcion, $categoria, $img, $img2, $altura, $peso, $numColeccion, $rareza, $idRegion, $idPre, $_POST['type'], $_POST['fullMove1'], $_POST['fullMove2']);
-        
     }
 
     $conexion = closeBd();
 }
 
-function deleteTypePokemon($idPokemon,$pokemon) {
+function deleteTypePokemon($idPokemon,$pokemon,$conexion) {
     try {
-        $conexion = openBd();
 
         $deleteStatement = "DELETE FROM Tipo_Pokemon WHERE id_Pokemon = :idPokemon";
         $deleteQuery = $conexion->prepare($deleteStatement);
@@ -559,16 +569,15 @@ function deleteTypePokemon($idPokemon,$pokemon) {
     catch (PDOException $e) 
     {
         $_SESSION['error'] = errorMessage($e);
-        $_SESSION['error'] = errorMessage($e);
+        $conexion->rollback();
         setPokemonSessionData($pokemon["nombre"], $pokemon["etapa"], $pokemon["ilustrador"], $pokemon["HP"], $pokemon["descripcion"], $pokemon["categoria"], $pokemon["img"], $pokemon["imgSecundaria"], $pokemon["altura"], $pokemon["peso"], $pokemon["num-coleccion"], $pokemon["rareza"], $pokemon["ID_Region"], $pokemon["ID_Preevolucion"], $_POST['type'], $_POST['fullMove1'], $_POST['fullMove2']);
     }
     $conexion = closeBd();
 }
 
 
-function deleteMovesPokemon($idPokemon,$pokemon) {
+function deleteMovesPokemon($idPokemon,$pokemon,$conexion) {
     try {
-        $conexion = openBd();
 
         $deleteStatement = "DELETE FROM Movimiento_Pokemon WHERE id_Pokemon = :idPokemon";
         $deleteQuery = $conexion->prepare($deleteStatement);
@@ -579,6 +588,7 @@ function deleteMovesPokemon($idPokemon,$pokemon) {
     } 
     catch (PDOException $e) 
     {
+        $conexion->rollback();
         setPokemonSessionData($pokemon["nombre"], $pokemon["etapa"], $pokemon["ilustrador"], $pokemon["HP"], $pokemon["descripcion"], $pokemon["categoria"], $pokemon["img"], $pokemon["imgSecundaria"], $pokemon["altura"], $pokemon["peso"], $pokemon["num-coleccion"], $pokemon["rareza"], $pokemon["ID_Region"], $pokemon["ID_Preevolucion"], $_POST['type'], $_POST['fullMove1'], $_POST['fullMove2']);
         $_SESSION['error'] = errorMessage($e);
     }

@@ -114,7 +114,7 @@
                 $pokemonTypes = selectTypeByPokemon($pokemon["id"]);
                 $hexType = getHexColor($pokemonTypes[0]['nombre']);
                 $typeWeakness = [];
-                foreach ($pokemonTypes as $type ) 
+                foreach ($pokemonTypes as $type) 
                 {
                     $typeW = selectTypeWeakness($type["id"]);
                     $typeWeakness = array_merge($typeWeakness, $typeW);
